@@ -1,13 +1,14 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-db_host = "localhost"
+db_host = "0.0.0.0"
 db_port = 3306
-db_username = "root"
-db_password = "#Ujji77stech"
+db_username = "shsysadmin"
+db_password = "ujjwal77"
 db_name = "forecasa"
 
 MYSQL_URL = f"mysql+pymysql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}?charset=utf8"
+print(f"url{MYSQL_URL}")
 POOL_SIZE = 20
 POOL_RECYCLE = 3600
 POOL_TIMEOUT = 15
