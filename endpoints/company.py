@@ -4,6 +4,7 @@ from models.response import Response
 from models.model import Company
 from config.db import Database
 import json
+from datetime import datetime
 
 
 router = APIRouter(
@@ -38,17 +39,15 @@ async def read_forecasa_data(username = Depends(authenticate_user)):
 @router.post("/add", response_description="forecasa data added into the database")
 async def add_forecasa_data(request: Request, username = Depends(authenticate_user)):
  
-    data = await request.body()
-    data = data.decode('utf-8')
-    data = json.loads(data)
+    data = await request.json()
 
-    companies=data['companies']
+    companies=data.get('companies' , dict())
     for cmp in companies:
         company= Company()
         # company.company_id = cmp['company_id']
         company.name= cmp.get('name')
         company.dba = cmp.get('dba')
-        company.tags = cmp.get('tags')
+        company.tag_names = cmp.get('tag_names')
         company.leads =cmp.get('leads')
         company.assignment_of_mortgage_transactions = cmp.get('assignment_of_mortgage_transactions')
         company.deed_transactions = cmp.get('deed_transactions')
@@ -67,6 +66,9 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
         company.principal_address = cmp.get('principal_address')
         company.principal_name = cmp.get('principal_name')
         company.average_mortgage_amount = cmp.get('average_mortgage_amount')
+        company.created_at = datetime.utcnow()
+        company.updated_at = datetime.utcnow()
+
     
         session = database.get_db_session(engine)
         session.add(company)
@@ -76,4 +78,4 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
         data = {"data": company.id}
         session.commit()
         session.close()
-    return Response(data, 200, "forecasa data added successfully.", False)
+    return Response(data, 200, "forecasa data added successfully.", False, "bronze")

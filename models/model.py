@@ -1,6 +1,8 @@
 # models.py
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, INTEGER, String, TIMESTAMP, BIGINT, BOOLEAN, text , JSON
+from sqlalchemy import Column, INTEGER, String, TIMESTAMP, BIGINT, BOOLEAN, text , JSON, DateTime
+from sqlalchemy import func
+
 
 
 
@@ -48,11 +50,11 @@ class Forecasa(Base):
 class Company(Base):
     __tablename__ = "company"
 
-    id = Column(INTEGER, primary_key=True, index=True)
-    company_id = Column(INTEGER)
+    id = Column(INTEGER)
+    company_id = Column(INTEGER,primary_key=True, index=True)
     name = Column(String)
     dba = Column(JSON)
-    tags = Column(JSON)
+    tag_names = Column(JSON)
     leads = Column(String)
     assignment_of_mortgage_transactions = Column(INTEGER)
     deed_transactions = Column(INTEGER)
@@ -71,6 +73,8 @@ class Company(Base):
     principal_address = Column(String)
     principal_name = Column(String)
     average_mortgage_amount = Column(INTEGER)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
   
 
 
