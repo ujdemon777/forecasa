@@ -50,7 +50,6 @@ class Forecasa(Base):
 class Company(Base):
     __tablename__ = "company"
 
-    id = Column(INTEGER)
     company_id = Column(INTEGER,primary_key=True, index=True)
     name = Column(String)
     dba = Column(JSON)

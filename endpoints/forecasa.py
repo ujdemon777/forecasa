@@ -83,4 +83,4 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
         data = {"forecasa": forecasa.id}
         session.commit()
         session.close()
-    return Response(transactions, 200, "forecasa data added successfully.", False)
+    return Response(transactions, 200, "forecasa data added successfully.", False, "bronze")

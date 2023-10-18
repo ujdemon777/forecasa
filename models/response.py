@@ -1,8 +1,14 @@
-def Response(data, code, message, error,level):
+def Response(data, message,code, error):
     return {
         "data": data,
-        "code": code,
         "message": message,
-        "error": error,
-        "level": level
+        "code": code,
+        "error": error
+    }
+
+def ErrorResponse(message,code, error):
+    return {
+        "message": message,
+        "code": code,
+        "error": error
     }
