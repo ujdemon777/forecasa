@@ -3,15 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, INTEGER, String, TIMESTAMP, BIGINT, BOOLEAN, text , JSON, DateTime
 from sqlalchemy import func
 
-
-
-
 Base = declarative_base()
-
-
-    
-
-
 
 class Forecasa(Base):
     __tablename__ = "forecasa"

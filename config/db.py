@@ -1,14 +1,19 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv, find_dotenv
+import os
 
-db_host = "0.0.0.0"
-db_port = 3306
-db_username = "shsysadmin"
-db_password = "ujjwal77"
-db_name = "forecasa"
+
+_ = load_dotenv(find_dotenv())
+
+db_host = os.getenv("db_host")
+db_port = os.getenv("db_port")
+db_username = os.getenv("db_username")
+db_password = os.getenv("db_password")
+db_name = os.getenv("db_name")
 
 MYSQL_URL = f"mysql+pymysql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}?charset=utf8"
-print(f"url{MYSQL_URL}")
+
 POOL_SIZE = 20
 POOL_RECYCLE = 3600
 POOL_TIMEOUT = 15
