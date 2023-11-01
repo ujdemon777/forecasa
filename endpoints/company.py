@@ -9,6 +9,15 @@ from datetime import datetime
 from sqlalchemy import and_, or_, func
 from dotenv import load_dotenv, find_dotenv
 import os
+import httpx
+
+from azure.storage.filedatalake import  DataLakeDirectoryClient, DataLakeServiceClient
+from azure.storage.blob import BlobServiceClient
+import base64
+from io import BufferedReader
+from azure.storage.blob import BlobClient
+
+
 
 
 _ = load_dotenv(find_dotenv())
@@ -23,6 +32,18 @@ database = Database()
 engine = database.get_db_connection()
 
 
+
+azure_storage_account_name = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
+azure_storage_account_key = os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
+azure_storage_file_system = os.getenv("AZURE_STORAGE_FILE_SYSTEM")
+
+# Initialize ADLS client
+adls_client = DataLakeServiceClient(account_url=f"https://{azure_storage_account_name}.dfs.core.windows.net", credential=azure_storage_account_key)
+
+
+# adls_client = DataLakeServiceClient(account_url=azure_storage_account_name, credential=azure_storage_account_key)
+
+print(adls_client)
 
 
 def authenticate_user(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
@@ -243,3 +264,186 @@ async def get_min_max_txn(username = Depends(authenticate_user)):
     return Response(data, "data retrieved successfully." , 200 , False)
 
 
+
+@router.get("/forecasa/states")
+async def fetch_states():
+    params = {"api_key": "JcGtDHRCa2p4IfOhs13veg"}  
+
+    try:
+        async with httpx.AsyncClient() as client:
+
+            url = "https://webapp.forecasa.com/api/v1/geo/counties_by_states"  
+            response = await client.get(url, params=params)
+
+
+            if response.status_code == 200:  
+                print("uk")
+                data = response.json()
+                return {"states": data}
+            elif response.status_code == 429: 
+                print("debug")
+                cookie = response.headers.get("set-cookie")
+                # res.set_cookie(key="forecasa", value=cookie)
+                # print(res)
+
+                cookies = {"forecasa": cookie}
+
+               
+                response1 = await client.get(url, cookies=cookies)
+                data = response1.json()
+                # print(data)
+                return {"states": data}
+
+    except Exception as error:
+        return {"error": str(error)}
+
+
+
+@router.post("/forecasa/fetch_company_data")
+async def fetch_company_data(
+    body = Body(None, description="List of categories to filter"),
+    # company_name: string = Query(None, description="List of categories to filter"),
+    # counties: list = Body(None, description="List of categories to filter")
+):
+    session = database.get_db_session(engine)
+    # print(type(company_tags))
+    print(f"dbody{body}")
+    params={"q[tags_name_in][]":body.get('company_tags'),"[transactions][q][county_in][]":body.get('counties'),"q[name_cont]":body.get('company_name'),"api_key": "JcGtDHRCa2p4IfOhs13veg"}
+   
+
+    async with httpx.AsyncClient() as client:
+
+        url = "https://webapp.forecasa.com/api/v1/companies"  
+        response = await client.get(url, params=params)
+        print(f"res1{response.url}")
+
+        if response.status_code == 200:
+            print("uk")
+            try:
+                data = response.json()
+                return data
+            except json.JSONDecodeError:
+                raise HTTPException(status_code=500, detail="Error parsing JSON data from the API")
+            
+        elif response.status_code == 429: 
+                print("debug")
+                cookie = response.headers.get("set-cookie")
+                cookies = {"forecasa": cookie}
+
+                params.pop('api_key')
+                response1 = await client.get(url, cookies=cookies,params=params)
+                print(f"res2{response1.url}")
+                data = response1.json()
+                # print(data)
+                return {"states": data}
+
+
+
+
+
+
+
+@router.get("/blob")
+async def create_blob():
+    try:
+        container_name = "capitalpro"
+
+        blob_name = "capital"
+
+        sas_url="https://traningshorthills.blob.core.windows.net/capitalpro?sp=racwdli&st=2023-10-20T11:15:11Z&se=2024-10-19T19:15:11Z&sv=2022-11-02&sr=c&sig=a2T2F33PkVxswp9diZd16uRl23gionr%2BLn8OtI7eEvg%3D"
+
+        blob_client = BlobClient.from_blob_url(sas_url)
+
+        # blob_name = str(f'{uuid.uuid4()}.md')
+        
+        # Create a BlobServiceClient
+        # blob_service_client = BlobServiceClient(account_url=f"https://{azure_storage_account_name}.blob.core.windows.net", credential=azure_storage_account_key)
+        
+        # # Get a reference to the container and blob
+        # container_client = blob_service_client.get_container_client(container_name)
+        # blob_client = container_client.get_blob_client(blob_name)
+
+        # Create a local directory to hold blob data
+        local_path = "./data"
+        if not os.path.exists(local_path):
+            os.makedirs(local_path)
+        else:
+            print("Directory already exists.")
+
+
+        # Create a file in the local data directory to upload and download
+        local_file_name = str('ukkk') + ".txt"
+        upload_file_path = os.path.join(local_path, local_file_name)
+
+        # Write text to the file
+        file = open(file=upload_file_path, mode='w')
+        file.write("Hello, ujjwal!")
+        file.close()
+
+        # Create a blob client using the local file name as the name for the blob
+        # blob_client = blob_service_client.get_blob_client(container=container_name, blob=local_file_name)
+
+        print("\nUploading to Azure Storage as blob:\n\t" + local_file_name)
+
+        # Upload the created file
+        with open(file=upload_file_path, mode="rb") as data:
+            f = data.read()
+            # encoded_data = f.encode('utf-8')  # Encode the text as bytes
+            # print(encoded_data)
+            blob_client.upload_blob(f, blob_type="BlockBlob")
+
+        # local_file_path = "/Users/shtlpmac042/desktop/uk.txt"
+
+        # blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+        # print(blob_client)
+
+        # with open(local_file_path, 'r') as data:
+        #     f = data.read()
+        #     encoded_data = f.encode('utf-8')  # Encode the text as bytes
+        #     print(encoded_data)
+        #     blob_client.upload_blob(encoded_data, blob_type="BlockBlob")
+
+        print("Blob created successfully.")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error listing files: {str(e)}")
+    
+
+
+@router.get("/blob")
+async def read_blob():
+    try:
+        container_name = "capitalpro"
+
+        # blob_name = "capitalpro"
+
+        # blob_name = str(f'{uuid.uuid4()}.md')
+        
+        # Create a BlobServiceClient
+        sas_url="sp=racwdli&st=2023-10-20T11:15:11Z&se=2024-10-19T19:15:11Z&sv=2022-11-02&sr=c&sig=a2T2F33PkVxswp9diZd16uRl23gionr%2BLn8OtI7eEvg%3D"
+
+        blob_service_client = BlobServiceClient(account_url=f"https://{azure_storage_account_name}.blob.core.windows.net", credential=sas_url)
+        
+        # Get a reference to the container and blob
+        container_client = blob_service_client.get_container_client(container_name)
+        # blob_client = container_client.get_blob_client(blob_name)
+
+        # container_client = blob_service_client.get_container_client(container_name)
+
+        blob_list = container_client.list_blobs()
+        print(blob_list)
+        print(type(blob_list))
+        print("debug1")
+        blobs=[]
+        for blob in blob_list:
+            print(f"File Name: {blob.name}")
+            blobs.append(f"File Name: {blob.name}")
+        return Response(blobs, f"{len(blobs)} blobs retrieved successfully." , 200 , False)
+
+        # # Download a file from the container
+        # file_name = "your_file_name"
+        # blob_client = container_client.get_blob_client(file_name)
+        # with open(file_name, "wb") as file:
+        #     file.write(blob_client.download_blob().readall())
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error listing files: {str(e)}")
