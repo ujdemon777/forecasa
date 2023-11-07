@@ -8,3 +8,7 @@
 
 # Python cache directories
 __pycache__/
+
+.idea/
+
+/env/
