@@ -3,6 +3,7 @@ anyio==3.7.1
 azure-core==1.29.5
 azure-storage-blob==12.18.3
 azure-storage-file-datalake==12.13.2
+bcrypt==4.0.1
 certifi==2023.7.22
 cffi==1.16.0
 charset-normalizer==3.3.1

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request, HTTPException, Query
+from fastapi import APIRouter, Depends, Request, HTTPException, Query, Body
 from Oauth import create_access_token,get_current_user
 from models.response import Response,ErrorResponse
 from dotenv import load_dotenv, find_dotenv
@@ -57,8 +57,15 @@ async def create_user(payload: schema.CreateUserSchema, request: Request):
 
 
 
-@router.get('/login',response_model=schema.Token)
-def login(email: str = Query(..., description="User email"), password: str = Query(..., description="User password")):
+@router.post('/login',response_model=schema.Token)
+def login(user_detail: dict = Body(..., description="email and password")):
+
+    email = user_detail.get('email')
+    password = user_detail.get('password')
+
+    if not email or not password:
+        raise HTTPException(status_code=400,
+                            detail='Need Both Email and Password')
 
     user = session.query(User).filter(
        User.email == email.lower()).first() 

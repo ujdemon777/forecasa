@@ -1,5 +1,4 @@
 from datetime import timedelta, datetime
-
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
@@ -7,12 +6,17 @@ from sqlalchemy.orm import Session
 from models.model import User
 from models import schema
 from config.db import Database
+from dotenv import load_dotenv, find_dotenv
+import os
+
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
-SECRET_KEY = "732ed638d14bffa82421bfff6be54fbd026279754f166eff3154bce56fee0891"
-ALGORITHM = "HS256"
+_ = load_dotenv(find_dotenv())
+
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+ALGORITHM = os.getenv("JWT_ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
@@ -31,7 +35,10 @@ def create_access_token(data: dict):
 
     return encoded_jwt
 
-def verify_token_access(token: str, credentials_exception):
+def verify_token_access(token: str):
+    credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                                          detail="You Are Not Authorized",
+                                          headers={"WWW-Authenticate": "Bearer"})
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
 
@@ -49,10 +56,10 @@ def verify_token_access(token: str, credentials_exception):
 def get_current_user(token: str = Depends(oauth2_scheme)):
     
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                          detail="Could not Validate Credentials",
+                                          detail="You Are Not Authorized",
                                           headers={"WWW-Authenticate": "Bearer"})
 
-    token = verify_token_access(token, credentials_exception)
+    token = verify_token_access(token)
     print(token)
 
     user = session.query(User).filter(User.id == token.get('user_id')).first()
