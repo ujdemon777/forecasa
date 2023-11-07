@@ -1,16 +1,9 @@
-from tkinter.tix import ComboBox
 from fastapi import APIRouter, Depends, HTTPException, status, Request, Query, Body
 from models.response import Response,ErrorResponse
-from models.model import Company
-from config.db import Database
-import json
+import json,os
 from dotenv import load_dotenv, find_dotenv
-import os
-import httpx
-
-from azure.storage.filedatalake import   DataLakeServiceClient
+# from azure.storage.filedatalake import   DataLakeServiceClient
 from azure.storage.blob import BlobServiceClient
-from azure.storage.blob import BlobClient
 from datetime import datetime
 
 
@@ -24,17 +17,13 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-database = Database()
-engine = database.get_db_connection()
-
-
 
 azure_storage_account_name = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
 azure_storage_account_key = os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
 azure_storage_file_system = os.getenv("AZURE_STORAGE_FILE_SYSTEM")
 azure_storage_saas_token = os.getenv("AZURE_STORAGE_SAAS_TOKEN")
 
-adls_client = DataLakeServiceClient(account_url=f"https://{azure_storage_account_name}.dfs.core.windows.net", credential=azure_storage_account_key)
+# adls_client = DataLakeServiceClient(account_url=f"https://{azure_storage_account_name}.dfs.core.windows.net", credential=azure_storage_account_key)
 
 
 
@@ -165,3 +154,42 @@ async def delete_particular_blob(blob_name: str = Query(..., description="name o
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete the blob Error: {str(e)}")
+
+
+
+
+
+@router.post("/apend_blob")
+async def add_config_blob():
+    try:
+       
+        container_name = azure_storage_file_system
+
+        sas_url=azure_storage_saas_token
+
+        blob_service_client = BlobServiceClient(account_url=f"https://{azure_storage_account_name}.blob.core.windows.net", credential=sas_url)
+        
+        container_client = blob_service_client.get_container_client(container_name)
+        blob_client = container_client.get_blob_client("config_blob.json")
+
+        data={}
+        data["source"] = "forecasa"
+        data["created_at"] = str(datetime.utcnow())
+
+        
+        if not blob_client.exists():
+            blob_client.upload_blob(json.dumps(data), blob_type="BlockBlob",overwrite=True)
+            return Response(data, f"config blob created successfully." , 200 , False)
+        else:
+            downloader = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
+            blob_text = downloader.readall()
+            new_content = blob_text + str(data)
+            print(new_content)
+            blob_client.upload_blob(json.dumps(new_content),blob_type="BlockBlob", overwrite=True)
+            # blob_client.append_block(json.dumps(data))
+            return Response(data, f"companies added successfully." , 200 , False)
+
+        
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to get the blob in the container. Error: {str(e)}")

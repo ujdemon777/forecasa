@@ -4,20 +4,11 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from models.response import Response,ErrorResponse
 from models.model import Company
 from config.db import Database
-import json
+import json,os,httpx
 from datetime import datetime
 from sqlalchemy import and_, or_, func
 from dotenv import load_dotenv, find_dotenv
-import os
-import httpx
-
-from azure.storage.filedatalake import  DataLakeDirectoryClient, DataLakeServiceClient
-from azure.storage.blob import BlobServiceClient
-import base64
-from io import BufferedReader
-from azure.storage.blob import BlobClient
-
-
+from utils import authenticate_user
 
 
 _ = load_dotenv(find_dotenv())
@@ -30,57 +21,15 @@ router = APIRouter(
 
 database = Database()
 engine = database.get_db_connection()
+session = database.get_db_session(engine)
 
-
-
-azure_storage_account_name = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
-azure_storage_account_key = os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
-azure_storage_file_system = os.getenv("AZURE_STORAGE_FILE_SYSTEM")
-
-# Initialize ADLS client
-adls_client = DataLakeServiceClient(account_url=f"https://{azure_storage_account_name}.dfs.core.windows.net", credential=azure_storage_account_key)
-
-
-# adls_client = DataLakeServiceClient(account_url=azure_storage_account_name, credential=azure_storage_account_key)
-
-print(adls_client)
-
-
-def authenticate_user(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
-    """
-    Authenticate User with Basic Authentication
-
-    This function is used for authenticating a user with Basic Authentication. It checks the provided HTTPBasicCredentials
-    against the stored username and password. If the credentials are valid, the function returns the authenticated username.
-
-    Parameters:
-        - `credentials`: HTTPBasicCredentials - The provided username and password for authentication.
-
-    Returns:
-        - If authentication is successful, returns the authenticated username.
-        - If the provided credentials are invalid, raises an HTTPException with a 401 Unauthorized status.
-    """
-
-    username = os.getenv("username")
-    password = os.getenv("password")
-
-    if credentials.username != username or credentials.password != password :
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-    return credentials.username
-
-
-
+forecasa_api_key= os.getenv("FORECASA_API_KEY")
 
 
 
 @router.get("/read")
 async def read_forecasa_data(username = Depends(authenticate_user)):
-    
-    session = database.get_db_session(engine)
+
     data = session.query(Company).all()
     return Response(data, "data retrieved successfully." , 200 , False)
 
@@ -96,7 +45,6 @@ async def filter_data(username = Depends(authenticate_user),
     last_lender_used: list = Query(None, description="List of categories to filter")
     ):
     
-    session = database.get_db_session(engine)
 
     try:
         filters = []
@@ -198,7 +146,6 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
         if not companies:
             return ErrorResponse("No companies provided in the request", 400 , False)
 
-        session = database.get_db_session(engine)
 
         added_company_ids = []
 
@@ -253,7 +200,6 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
 @router.get("/value")
 async def get_min_max_txn(username = Depends(authenticate_user)):
     
-    session = database.get_db_session(engine)
     min_mortgage = session.query(func.min(Company.mortgage_transactions)).scalar()
     max_mortgage = session.query(func.max(Company.mortgage_transactions)).scalar()
 
@@ -267,7 +213,7 @@ async def get_min_max_txn(username = Depends(authenticate_user)):
 
 @router.get("/forecasa/states")
 async def fetch_states():
-    params = {"api_key": "JcGtDHRCa2p4IfOhs13veg"}  
+    params = {"api_key": forecasa_api_key}  
 
     try:
         async with httpx.AsyncClient() as client:
@@ -283,9 +229,6 @@ async def fetch_states():
             elif response.status_code == 429: 
                 print("debug")
                 cookie = response.headers.get("set-cookie")
-                # res.set_cookie(key="forecasa", value=cookie)
-                # print(res)
-
                 cookies = {"forecasa": cookie}
 
                
@@ -305,10 +248,7 @@ async def fetch_company_data(
     # company_name: string = Query(None, description="List of categories to filter"),
     # counties: list = Body(None, description="List of categories to filter")
 ):
-    session = database.get_db_session(engine)
-    # print(type(company_tags))
-    print(f"dbody{body}")
-    params={"q[tags_name_in][]":body.get('company_tags'),"[transactions][q][county_in][]":body.get('counties'),"q[name_cont]":body.get('company_name'),"api_key": "JcGtDHRCa2p4IfOhs13veg"}
+    params={"q[tags_name_in][]":body.get('company_tags'),"[transactions][q][county_in][]":body.get('counties'),"q[name_cont]":body.get('company_name'),"api_key": forecasa_api_key}
    
 
     async with httpx.AsyncClient() as client:
@@ -334,7 +274,6 @@ async def fetch_company_data(
                 response1 = await client.get(url, cookies=cookies,params=params)
                 print(f"res2{response1.url}")
                 data = response1.json()
-                # print(data)
                 return {"states": data}
 
 

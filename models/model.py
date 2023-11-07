@@ -5,8 +5,8 @@ from sqlalchemy import func
 
 Base = declarative_base()
 
-class Forecasa(Base):
-    __tablename__ = "forecasa"
+class Transaction(Base):
+    __tablename__ = "transaction"
 
     id = Column(INTEGER, primary_key=True, index=True)
     fc_transaction_id= Column(String)
@@ -71,6 +71,17 @@ class Company(Base):
 
 
 
+class User(Base):
+    __tablename__ = 'user'
 
+    id = Column(INTEGER, primary_key=True, autoincrement=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    phone = Column(String, nullable=True)
+    role = Column(String, server_default='user', nullable=False)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
     
     
