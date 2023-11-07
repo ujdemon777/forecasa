@@ -1,7 +1,7 @@
 .env
 
 # python virtual env
-'venv/'
+'env/'
 
 # Python compiled files
 *.pyc
