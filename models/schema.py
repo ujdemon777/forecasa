@@ -3,11 +3,11 @@ from datetime import datetime
 from typing import Optional
 
 class UserBaseSchema(BaseModel):
-    first_name: str
-    last_name : Optional[str]
+    first_name: Optional[str] = ""
+    last_name : Optional[str] = ""
     email: EmailStr
     password: constr(min_length=8)
-    phone: Optional[str]
+    phone: Optional[str] = ""
 
     class Config:
         orm_mode = True

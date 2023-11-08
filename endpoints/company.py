@@ -38,10 +38,10 @@ async def read_forecasa_data(username = Depends(authenticate_user)):
 
 @router.post("/filter")
 async def filter_data(username = Depends(authenticate_user),
-    mortgage_transactions: dict = Body(None, description="Minimum value of the range"),
-    last_mortgage_date: dict = Body(None, description="Maximum value of the range"),
-    last_transaction_date: dict = Body(None, description="Start date of the range (YYYY-MM-DD)"),
-    average_mortgage_amount: dict = Body(None, description="End date of the range (YYYY-MM-DD)"),
+    mortgage_transactions: dict = Body(None, description="Minimum & Maximum value of the range"),
+    last_mortgage_date: dict = Body(None, description="Start date & End date of the range"),
+    last_transaction_date: dict = Body(None, description="Start date & End date of the range (YYYY-MM-DD)"),
+    average_mortgage_amount: dict = Body(None, description="Minimum & Maximum value of the range"),
     last_lender_used: list = Query(None, description="List of categories to filter")
     ):
     
