@@ -75,8 +75,7 @@ class User(Base):
     __tablename__ = 'user'
 
     id = Column(INTEGER, primary_key=True, autoincrement=True)
-    first_name = Column(String)
-    last_name = Column(String)
+    user_name = Column(String)
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     phone = Column(String, nullable=True)
