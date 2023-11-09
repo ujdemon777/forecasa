@@ -3,8 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 class UserBaseSchema(BaseModel):
-    first_name: Optional[str] = ""
-    last_name : Optional[str] = ""
+    user_name: Optional[str] = ""
     email: EmailStr
     password: constr(min_length=8)
     phone: Optional[str] = ""
@@ -31,3 +30,13 @@ class Token(BaseModel):
 
 class DataToken(BaseModel):
     id: Optional[str] = None
+
+
+
+
+class CompanyFilters(BaseModel):
+    child_sponsor: Optional[str] = None
+    transaction_type: Optional[list] = None
+    transaction_tags: Optional[list] = None
+    counties: Optional[list] = None
+    amount: Optional[dict]= None
