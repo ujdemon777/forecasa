@@ -94,7 +94,7 @@ async def read_users_me(
 ):
     return current_user
 
-@router.post('/users', response_model=schema.UserBaseSchema)
+@router.post('/users')
 async def read_users_me():
     data = session.query(User).all()
     return Response(data, "users retrieved successfully." , 200 , False)
