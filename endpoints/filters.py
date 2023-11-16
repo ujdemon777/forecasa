@@ -29,19 +29,22 @@ async def read_forecasa_data():
 @router.post("/filter")
 async def fetch_company_data(filters: CompanyFilters):
     params = {
-        "api_key": forecasa_api_key,
-        "page": 1,
-        "page_size": 200
+        "api_key": forecasa_api_key
     }
+
+    if filters.page:
+        params[f"page"] = filters.page
+
+    if filters.page_size:
+        params[f"page_size"] = filters.page_size
 
     if filters.transaction_tags:
         params[f"q[tags_name_in][]"] = filters.transaction_tags
 
-    # if filters.child_sponsor:
-    #     params["q[name_cont]"] = filters.child_sponsor
+    if filters.child_sponsor:
+        params["q[name_cont]"] = filters.child_sponsor
 
     if filters.counties:
-        # for county in filters.counties:
         params["q[transactions][q][county_in][]"] = filters.counties
 
     if filters.transaction_type:
@@ -62,6 +65,38 @@ async def fetch_company_data(filters: CompanyFilters):
             if response.status_code == 200:  
                 data = response.json()
                 return {"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)}
+            # elif response.status_code == 429: 
+            #     print("debug")
+            #     cookie = response.headers.get("set-cookie")
+            #     cookies = {"forecasa": cookie}
+
+               
+            #     response1 = await client.get(url, cookies=cookies)
+            #     data = response1.json()
+            #     # print(data)
+            #     return {"states": data}
+
+    except Exception as error:
+        return {"error": str(error)}
+    
+
+
+@router.get("/txn")
+async def fetch_company_data(company_id: int = Query(..., description="require company id")):
+    params = {
+        "api_key": forecasa_api_key
+    }
+        
+    try:
+        async with httpx.AsyncClient() as client:
+
+            url = f"https://webapp.forecasa.com/api/v1/companies/{company_id}/transactions"  
+            print(url)
+            response = await client.get(url, params=params)
+
+            if response.status_code == 200:  
+                data = response.json()
+                return {"transactions": data.get("transactions", [])}
             # elif response.status_code == 429: 
             #     print("debug")
             #     cookie = response.headers.get("set-cookie")
