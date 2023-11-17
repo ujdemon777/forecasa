@@ -16,34 +16,35 @@ class Filters:
         pass
 
     async def fetch_filtered_company_data(filters: CompanyFilters):
+
+        filters = CompanyFilters.model_validate(filters)
         params = {
             "api_key": forecasa_api_key
         }
-        print(filters)
 
-        if filters.get("page"):
-            params[f"page"] = filters.get("page")
+        if filters.page:
+            params[f"page"] = filters.page
 
-        if filters.get("page_size"):
-            params[f"page_size"] = filters.get("page_size")
+        if filters.page_size:
+            params[f"page_size"] = filters.page_size
 
-        if filters.get("transaction_tags"):
-            params[f"q[tags_name_in][]"] = filters.get("transaction_tags")
+        if filters.transaction_tags:
+            params[f"q[tags_name_in][]"] = filters.transaction_tags
 
-        if filters.get("child_sponsor"):
-            params["q[name_cont]"] = filters.get("child_sponsor")
+        if filters.child_sponsor:
+            params["q[name_cont]"] = filters.child_sponsor
 
-        if filters.get("counties"):
-            params["q[transactions][q][county_in][]"] = filters.get("counties")
+        if filters.counties:
+            params["q[transactions][q][county_in][]"] = filters.counties
 
-        if filters.get("transaction_type"):
-            params[f"transactions][q][transaction_type_in][]"] = filters.get("transaction_type")
+        if filters.transaction_type:
+            params[f"transactions][q][transaction_type_in][]"] = filters.transaction_type
 
-        if filters.get("amount"):
-            if filters.get("amount",{}).get("max_value"):
-                params[f"transactions[q][amount_lteq]"] = filters.get("amount",{}).get("max_value")
-            if filters.get("amount",{}).get("min_value"):
-                params[f"transactions[q][amount_gteq]"] = filters.get("amount",{}).get("min_value")
+        if filters.amount:
+            if filters.amount.get("max_value"):
+                params[f"transactions[q][amount_lteq]"] = filters.amount.get("max_value")
+            if filters.amount.get("min_value"):
+                params[f"transactions[q][amount_gteq]"] = filters.amount.get("min_value")
             
         try:
             async with httpx.AsyncClient() as client:
