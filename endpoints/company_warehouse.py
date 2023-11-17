@@ -5,6 +5,7 @@ from dotenv import load_dotenv, find_dotenv
 from azure.storage.blob import BlobServiceClient
 from datetime import datetime
 from blobs import Blobs
+from managers.filters import Filters
 
 
 
@@ -31,10 +32,12 @@ azure_storage_saas_token = os.getenv("AZURE_STORAGE_SAAS_TOKEN")
 async def create_blob(request:Request):
     try:
 
-        data = await request.json()
+        filters = await request.json()
+
+        data = await Filters.fetch_filtered_company_data(filters)
         data["source"] = "forecasa"
         data["created_at"] = str(datetime.utcnow())
-        data["filters"] = None
+        data["filters"] = filters
 
         container_name = azure_storage_file_system
 
@@ -97,7 +100,7 @@ async def create_blob(request:Request):
        
 
 
-        return Response(company_ids, "forecasa data added successfully", 200, False)
+        return Response(company_ids, "company_ids added successfully", 200, False)
 
 
     except Exception as e:

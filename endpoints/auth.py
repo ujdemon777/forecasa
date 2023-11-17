@@ -91,7 +91,7 @@ def login(user_detail: dict = Body(..., description="email and password")):
     return {"access_token":access_token,"token_type":"bearer","status": "success"}
 
 
-@router.get('/user', response_model=schema.UserBaseSchema)
+@router.get('/current_user', response_model=schema.CreateUserSchema)
 async def read_users_me(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
