@@ -23,21 +23,18 @@ class Blobs:
             
             if not blob_client.exists():
                 blob_client.upload_blob(json.dumps(data), blob_type="BlockBlob",overwrite=True)
-                return Response(data, f"company blob created successfully." , 200 , False)
+                return company_ids
             else:
                 downloader = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
                 blob_text = downloader.readall()
                 existing_data = json.loads(blob_text) if blob_text else []
 
-                print(existing_data)
-
-                if existing_data and "companies" in existing_data[0]:
-                    existing_data[0]["companies"].extend(company_ids)
-                else:
-                    existing_data = [{'companies': company_ids, 'source': 'forecasa', 'created_at': str(datetime.utcnow())}]
+                existing_company_ids = set(existing_data.get("companies", []))
+                unique_company_ids = list(set(company_ids) - existing_company_ids)
+                existing_data["companies"] = existing_data.get("companies", []) + unique_company_ids
 
                 blob_client.upload_blob(json.dumps(existing_data), blob_type="BlockBlob", overwrite=True)
-                return Response(data, f"companies added successfully." , 200 , False)
+                return unique_company_ids
 
             
         

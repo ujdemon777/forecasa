@@ -59,6 +59,22 @@ async def create_blob(request:Request):
 
         for cmp in companies:
             company_ids.append(cmp.get('id'))
+        
+
+        try:
+            unique_company_ids = await Blobs.add_companies_blob(container_client,company_ids)
+            print("company Blob added successfully for these",unique_company_ids)
+            await Blobs.add_config_blob(container_client)
+            print("config Blob added successfully")
+        
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error while creating Company Blob: {str(e)}")
+
+        filtered_companies = [company for company in data["companies"] if company["id"] in unique_company_ids]
+        print("filtered_companies",filtered_companies)
+        data["companies"] = filtered_companies
+
+        print(data)
 
         if not os.path.exists(local_path):
             os.makedirs(local_path)
@@ -78,14 +94,7 @@ async def create_blob(request:Request):
 
         print("Blob created successfully.")
 
-        try:
-            await Blobs.add_companies_blob(container_client,company_ids)
-            print("company Blob added successfully")
-            await Blobs.add_config_blob(container_client)
-            print("config Blob added successfully")
-        
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error while creating Company Blob: {str(e)}")
+       
 
 
         return Response(company_ids, "forecasa data added successfully", 200, False)
