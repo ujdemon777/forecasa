@@ -35,6 +35,7 @@ async def create_blob(request:Request):
         filters = await request.json()
 
         data = await Filters.fetch_filtered_company_data(filters)
+        print(data)
         data["source"] = "forecasa"
         data["created_at"] = str(datetime.utcnow())
         data["filters"] = filters
@@ -54,6 +55,8 @@ async def create_blob(request:Request):
         blob_client = container_client.get_blob_client(directory_name + blob_name)
 
         companies=data.get('companies' , dict())
+
+        print(companies)
 
         if not companies:
             return ErrorResponse("No companies provided in the request", 400 , False)
