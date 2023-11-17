@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Query, B
 from models.response import Response,ErrorResponse
 import json,os
 from dotenv import load_dotenv, find_dotenv
-# from azure.storage.filedatalake import   DataLakeServiceClient
 from azure.storage.blob import BlobServiceClient
 from datetime import datetime
+from blobs import Blobs
 
 
 
@@ -41,11 +41,11 @@ async def create_blob(request:Request):
         sas_url= azure_storage_saas_token
         blob_service_client = BlobServiceClient(account_url=f"https://{azure_storage_account_name}.blob.core.windows.net", credential=sas_url)
 
-
         current_date = datetime.now().strftime("%Y-%m-%d")
+        current_date_time = str(datetime.utcnow())
         local_path = os.path.join("./data", current_date)
         directory_name = f"{current_date}/"
-        blob_name = f"forecasaa_{current_date}.json"
+        blob_name = f"forecasaa_{current_date_time}.json"
     
         container_client = blob_service_client.get_container_client(container_name)
         blob_client = container_client.get_blob_client(directory_name + blob_name)
@@ -55,10 +55,10 @@ async def create_blob(request:Request):
         if not companies:
             return ErrorResponse("No companies provided in the request", 400 , False)
 
-        added_company_ids = []
+        company_ids = []
 
         for cmp in companies:
-            added_company_ids.append(cmp.get('id'))
+            company_ids.append(cmp.get('id'))
 
         if not os.path.exists(local_path):
             os.makedirs(local_path)
@@ -78,7 +78,17 @@ async def create_blob(request:Request):
 
         print("Blob created successfully.")
 
-        return Response(added_company_ids, "forecasa data added successfully", 200, False)
+        try:
+            await Blobs.add_companies_blob(container_client,company_ids)
+            print("company Blob added successfully")
+            await Blobs.add_config_blob(container_client)
+            print("config Blob added successfully")
+        
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error while creating Company Blob: {str(e)}")
+
+
+        return Response(company_ids, "forecasa data added successfully", 200, False)
 
 
     except Exception as e:
@@ -154,42 +164,3 @@ async def delete_particular_blob(blob_name: str = Query(..., description="name o
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete the blob Error: {str(e)}")
-
-
-
-
-
-@router.post("/apend_blob")
-async def add_config_blob():
-    try:
-       
-        container_name = azure_storage_file_system
-
-        sas_url=azure_storage_saas_token
-
-        blob_service_client = BlobServiceClient(account_url=f"https://{azure_storage_account_name}.blob.core.windows.net", credential=sas_url)
-        
-        container_client = blob_service_client.get_container_client(container_name)
-        blob_client = container_client.get_blob_client("config_blob.json")
-
-        data={}
-        data["source"] = "forecasa"
-        data["created_at"] = str(datetime.utcnow())
-
-        
-        if not blob_client.exists():
-            blob_client.upload_blob(json.dumps(data), blob_type="BlockBlob",overwrite=True)
-            return Response(data, f"config blob created successfully." , 200 , False)
-        else:
-            downloader = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
-            blob_text = downloader.readall()
-            new_content = blob_text + str(data)
-            print(new_content)
-            blob_client.upload_blob(json.dumps(new_content),blob_type="BlockBlob", overwrite=True)
-            # blob_client.append_block(json.dumps(data))
-            return Response(data, f"companies added successfully." , 200 , False)
-
-        
-    
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get the blob in the container. Error: {str(e)}")
