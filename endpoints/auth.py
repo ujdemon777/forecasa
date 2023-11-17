@@ -114,7 +114,8 @@ async def read_all_users(
 
 @router.get('/{id}')
 async def read_users(id:int):
-    user = session.query(User).filter(User.id == id).first()
+    user = session.query(User).options(defer(User.password)).filter(User.id == id).first()
+    
     if user:
         return {"data": user, "message": "User retrieved successfully.", "code": 200, "error": False}
     else:
