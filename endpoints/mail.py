@@ -3,13 +3,13 @@ from Oauth import create_access_token,get_current_user
 from models.response import Response,ErrorResponse
 from dotenv import load_dotenv, find_dotenv
 from models import schema
-from mail.mail import Email
+from managers.mail.mail import Email
 
 _ = load_dotenv(find_dotenv())
 
 router = APIRouter(
     prefix="/mail",
-    tags=[""],
+    tags=["Mail"],
     responses={404: {"description": "Not found"}},
 )
 

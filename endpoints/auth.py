@@ -13,7 +13,6 @@ import hashlib
 from random import randbytes
 # from mailersend import emails,templates
 import os
-from mail.mail import Email
 from sqlalchemy.orm import defer
 from sqlalchemy import desc
 
@@ -23,7 +22,7 @@ _ = load_dotenv(find_dotenv())
 
 router = APIRouter(
     prefix="/auth",
-    tags=[""],
+    tags=["Auth"],
     responses={404: {"description": "Not found"}},
 )
 
@@ -50,14 +49,6 @@ async def create_user(payload: schema.CreateUserSchema, request: Request):
     payload.created_at = datetime.utcnow()
     payload.updated_at = datetime.utcnow()
     new_user = User(**payload.dict())
-
-    # new_user = User(
-    #     email=payload.email.lower(), 
-    #     password=payload.password,  
-    #     role='user',
-    #     created_at = datetime.utcnow(),
-    #     updated_at = datetime.utcnow()
-    # )
 
     session.add(new_user)
     session.commit()
@@ -91,7 +82,7 @@ def login(user_detail: dict = Body(..., description="email and password")):
     return {"access_token":access_token,"token_type":"bearer","status": "success"}
 
 
-@router.get('/current_user', response_model=schema.CreateUserSchema)
+@router.get('/current_user')
 async def read_users_me(
     current_user: Annotated[User, Depends(get_current_user)]
 ):

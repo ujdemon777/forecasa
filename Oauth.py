@@ -54,14 +54,7 @@ def verify_token_access(token: str):
     return payload
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
-    
-    credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                          detail="You Are Not Authorized",
-                                          headers={"WWW-Authenticate": "Bearer"})
-
     token = verify_token_access(token)
-    print(token)
 
     user = session.query(User).options(defer(User.password)).filter(User.id == token.get('user_id')).first()
-
     return user

@@ -4,7 +4,7 @@ import json,os
 from dotenv import load_dotenv, find_dotenv
 from azure.storage.blob import BlobServiceClient
 from datetime import datetime
-from blobs import Blobs
+from managers.blobs import Blobs
 from managers.filters import Filters
 
 
