@@ -1,21 +1,22 @@
-from tkinter.tix import ComboBox
-from fastapi import APIRouter, Depends, HTTPException, status, Request, Query, Body
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from models.response import Response,ErrorResponse
-from models.model import Company
+from fastapi import APIRouter, Depends, HTTPException, Query, Body,File, UploadFile
+from models.company import Company
 from config.db import Database
-import json,os,httpx
 from datetime import datetime
 from sqlalchemy import and_, or_, func
 from dotenv import load_dotenv, find_dotenv
 from utils import authenticate_user
+from utils import upload_file
+from fastapi.responses import JSONResponse
+from Oauth import get_current_user
+from sqlalchemy import desc
+
 
 
 _ = load_dotenv(find_dotenv())
 
 router = APIRouter(
-    prefix="/company",
-    tags=["Company"],
+    prefix="/leads",
+    tags=["Leads"],
     responses={404: {"description": "Not found"}},
 )
 
@@ -23,27 +24,43 @@ database = Database()
 engine = database.get_db_connection()
 session = database.get_db_session(engine)
 
-forecasa_api_key= os.getenv("FORECASA_API_KEY")
-
 
 
 @router.get("/read")
-async def read_forecasa_data(username = Depends(authenticate_user)):
+async def get_leads(current_user: str = Depends(get_current_user),
+        page: int = Query(None,ge=1),
+        page_size: int = Query(None,ge=1)
+    ):
 
-    data = session.query(Company).all()
-    return Response(data, "data retrieved successfully." , 200 , False)
+    if not page:
+        page=1
+
+    if not page_size:
+        page_size=100
+
+    leads = session.query(Company).order_by(
+                    desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
+    return JSONResponse({"leads" : leads, "msg":"All leads retrieved successfully"})
 
 
 
 
 @router.post("/filter")
-async def filter_data(username = Depends(authenticate_user),
-    mortgage_transactions: dict = Body(None, description="Minimum & Maximum value of the range"),
-    last_mortgage_date: dict = Body(None, description="Start date & End date of the range"),
-    last_transaction_date: dict = Body(None, description="Start date & End date of the range (YYYY-MM-DD)"),
-    average_mortgage_amount: dict = Body(None, description="Minimum & Maximum value of the range"),
-    last_lender_used: list = Query(None, description="List of categories to filter")
+async def filter_leads(current_user: str = Depends(get_current_user),
+        mortgage_transactions: dict = Body(None, description="Minimum & Maximum value of the range"),
+        last_mortgage_date: dict = Body(None, description="Start date & End date of the range"),
+        last_transaction_date: dict = Body(None, description="Start date & End date of the range (YYYY-MM-DD)"),
+        average_mortgage_amount: dict = Body(None, description="Minimum & Maximum value of the range"),
+        last_lender_used: list = Query(None, description="List of categories to filter"),
+        page: int = Query(None,ge=1),
+        page_size: int = Query(None,ge=1)
     ):
+
+    if not page:
+        page=1
+
+    if not page_size:
+        page_size=100
     
 
     try:
@@ -88,32 +105,26 @@ async def filter_data(username = Depends(authenticate_user),
 
 
         if filters:
-            data = session.query(Company).filter(and_(*filters)).all()
-            print(len(data))
-            return Response(data, "data retrieved successfully." , 200 , False)
+            leads = session.query(Company).filter(and_(*filters)).order_by(
+                    desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
+            return JSONResponse({"leads":leads, "msg":"leads generated"})
 
         else:
-            return ErrorResponse("No filters provided", 400 , False)
+            return JSONResponse({"msg":"No Filters Provided"})
 
     except Exception as e:
-        return ErrorResponse("error occurred while fetching forecasa data", 500, str(e))
+        raise HTTPException(status_code=400,detail=f"error occurred while fetching leads data:{str(e)}")
 
 
 
-
-
-    
-
-
-
-@router.post("/add", response_description="forecasa data added into the database")
-async def add_forecasa_data(request: Request, username = Depends(authenticate_user)):
+@router.post("/add")
+async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get_current_user)):
 
     """
-    Adding Forecasa Company Data to the Database
+    Adding leads Company Data to the Database
 
-    This endpoint allows you to add Forecasa data to the database. It expects a JSON request containing a list of companies
-    with their details. The companies are added to the database, and a list of added company IDs is returned upon successful insertion.
+    This endpoint allows you to add leads data to the database. It expects a JSON request containing a list of companies
+    The companies are added to the database, and a list of added company IDs is returned upon successful insertion.
 
     Parameters:
         - `request`: FastAPI Request object.
@@ -134,17 +145,17 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
     Response:
     - If successful, returns a list of added company IDs.
     - If no companies are provided in the request, returns an error response.
-    - In case of an integrity error, returns an error response with a 500 status code.
+    - In case of an integrity error, returns an error response with a 400 status code.
 
     """
 
     try:
-        data = await request.json()
-
-        companies=data.get('companies' , dict())
+        response = await upload_file(file)
+        if response.get("status_code") == 200:
+            companies=response.get('data' , dict()).get("companies",[])
 
         if not companies:
-            return ErrorResponse("No companies provided in the request", 400 , False)
+            raise JSONResponse({"msg":"No Companies Provided in request"})
 
 
         added_company_ids = []
@@ -176,7 +187,6 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
             company.average_mortgage_amount = cmp.get('average_mortgage_amount')
             company.created_at = datetime.utcnow()
             company.updated_at = datetime.utcnow()
-
         
             
             session.add(company)
@@ -188,11 +198,11 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
         session.commit()
         session.close()
 
-        return Response(added_company_ids, "forecasa data added successfully", 200, False)
+        return JSONResponse({"companies_id":added_company_ids, "msg":"leads data added successfully"})
         
     except Exception as e:
         session.rollback()
-        return ErrorResponse("Integrity error occurred while adding forecasa data", 500, str(e))
+        raise HTTPException(status_code=400,detail=f"Integrity error occurred while adding leads data:{str(e)}")
 
 
 
@@ -207,74 +217,10 @@ async def get_min_max_txn(username = Depends(authenticate_user)):
     max_avg_mortgage_amount = session.query(func.max(Company.average_mortgage_amount)).scalar()
 
     data={'min_mortgage':min_mortgage,'max_mortgage':max_mortgage,'min_avg_mortgage_amount':min_avg_mortgage_amount, 'max_avg_mortgage_amount':max_avg_mortgage_amount}
-    return Response(data, "data retrieved successfully." , 200 , False)
+    return JSONResponse({"data": data, "msg":"mortage data retrieved successfully"})
 
 
 
-@router.get("/forecasa/states")
-async def fetch_states():
-    params = {"api_key": forecasa_api_key}  
-
-    try:
-        async with httpx.AsyncClient() as client:
-
-            url = "https://webapp.forecasa.com/api/v1/geo/counties_by_states"  
-            response = await client.get(url, params=params)
-
-
-            if response.status_code == 200:  
-                print("uk")
-                data = response.json()
-                return {"states": data}
-            elif response.status_code == 429: 
-                print("debug")
-                cookie = response.headers.get("set-cookie")
-                cookies = {"forecasa": cookie}
-
-               
-                response1 = await client.get(url, cookies=cookies)
-                data = response1.json()
-                # print(data)
-                return {"states": data}
-
-    except Exception as error:
-        return {"error": str(error)}
-
-
-
-@router.post("/forecasa/fetch_company_data")
-async def fetch_company_data(
-    body = Body(None, description="List of categories to filter"),
-    # company_name: string = Query(None, description="List of categories to filter"),
-    # counties: list = Body(None, description="List of categories to filter")
-):
-    params={"q[tags_name_in][]":body.get('company_tags'),"[transactions][q][county_in][]":body.get('counties'),"q[name_cont]":body.get('company_name'),"api_key": forecasa_api_key}
-   
-
-    async with httpx.AsyncClient() as client:
-
-        url = "https://webapp.forecasa.com/api/v1/companies"  
-        response = await client.get(url, params=params)
-        print(f"res1{response.url}")
-
-        if response.status_code == 200:
-            print("uk")
-            try:
-                data = response.json()
-                return data
-            except json.JSONDecodeError:
-                raise HTTPException(status_code=500, detail="Error parsing JSON data from the API")
-            
-        elif response.status_code == 429: 
-                print("debug")
-                cookie = response.headers.get("set-cookie")
-                cookies = {"forecasa": cookie}
-
-                params.pop('api_key')
-                response1 = await client.get(url, cookies=cookies,params=params)
-                print(f"res2{response1.url}")
-                data = response1.json()
-                return {"states": data}
 
 
 

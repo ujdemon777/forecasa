@@ -1,14 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request, Query, Body
-from models.response import Response,ErrorResponse
-import json,os,httpx
+from fastapi import HTTPException
+import os,httpx
 from dotenv import load_dotenv, find_dotenv
-from models.schema import CompanyFilters
+from schemas.filters import CompanyFilters
+from fastapi.responses import JSONResponse
 
 
 _ = load_dotenv(find_dotenv())
 forecasa_api_key= os.getenv("FORECASA_API_KEY")
-
-
 
 class Filters:
         
@@ -31,8 +29,8 @@ class Filters:
         if filters.transaction_tags:
             params[f"q[tags_name_in][]"] = filters.transaction_tags
 
-        if filters.child_sponsor:
-            params["q[name_cont]"] = filters.child_sponsor
+        if filters.name:
+            params["q[name_cont]"] = filters.name
 
         if filters.counties:
             params["[transactions][q][county_in][]"] = filters.counties
@@ -45,7 +43,7 @@ class Filters:
                 params[f"transactions[q][amount_lteq]"] = filters.amount.get("max_value")
             if filters.amount.get("min_value"):
                 params[f"transactions[q][amount_gteq]"] = filters.amount.get("min_value")
-        print(filters)
+
         try:
             async with httpx.AsyncClient() as client:
 
@@ -54,7 +52,7 @@ class Filters:
 
                 if response.status_code == 200:  
                     data = response.json()
-                    return {"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)}
+                    return JSONResponse({"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)})
 
-        except Exception as error:
-            return {"error": str(error)}
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))

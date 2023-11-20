@@ -1,7 +1,10 @@
+from fastapi.responses import JSONResponse
 from passlib.context import CryptContext
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, File, UploadFile
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import os
+import os,json,io
+import pandas as pd
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -40,3 +43,26 @@ def authenticate_user(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
+
+
+async def upload_file(file: UploadFile = File(...)):
+
+    file_extension = file.filename.split(".")[-1]
+
+    if file_extension.lower() == "json":
+        contents = await file.read()
+        try:
+            json_data = json.loads(contents.decode("utf-8"))
+            return {"msg": "JSON file received", "data": json_data, "status_code":200}
+        except json.JSONDecodeError:
+            pass  
+
+    elif file_extension.lower() in ["csv", "xlsx"]:
+        contents = await file.read()
+        try:
+            df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
+            return {"msg": "CSV file received", "data": df.to_dict(),"status_code":200}
+        except pd.errors.ParserError:
+            pass 
+
+    return {"msg": "Unsupported file format, not csv/xlxs/json"}

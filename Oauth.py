@@ -2,14 +2,11 @@ from datetime import timedelta, datetime
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from sqlalchemy.orm import Session,defer
-from models.model import User
-from models import schema
+from sqlalchemy.orm import defer
+from models.user import User
 from config.db import Database
 from dotenv import load_dotenv, find_dotenv
 import os
-
-
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
@@ -46,7 +43,6 @@ def verify_token_access(token: str):
         print(id,payload)
         if id is None:
             raise credentials_exception
-        # token_data = schema.DataToken(id)
     except JWTError as e:
         print(e)
         raise credentials_exception

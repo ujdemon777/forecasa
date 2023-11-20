@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from models.response import Response
-from models.model import Transaction
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import JSONResponse
+from models.transaction import Transaction
 from config.db import Database
 import json
 from utils import authenticate_user
@@ -22,7 +21,7 @@ session = database.get_db_session(engine)
 async def read_forecasa_data(username = Depends(authenticate_user)):
     
     data = session.query(Transaction).all()
-    return Response(data, 200, "data retrieved successfully.", False)
+    return JSONResponse({"msg":"data retrieved successfully."})
 
 
 @router.post("/add", response_description="forecasa data added into the database")
@@ -71,4 +70,4 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
         data = {"transaction": transaction.id}
         session.commit()
         session.close()
-    return Response(data, 200, "transaction data added successfully.", False, "bronze")
+    return JSONResponse({"msg": "transaction data added successfully"})

@@ -2,6 +2,8 @@ import smtplib
 from email.mime.text import MIMEText
 from dotenv import load_dotenv, find_dotenv
 import os
+from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 
 _ = load_dotenv(find_dotenv())
 
@@ -48,10 +50,10 @@ class Email:
             msg["To"] = rec_email
 
             server.sendmail(sender_email, rec_email, msg.as_string())
-            print("Email has been sent to", rec_email)
+            return JSONResponse({"msg": f"Email has been sent to {rec_email}","status_code":200})
 
         except smtplib.SMTPAuthenticationError as e:
-            print("Login failed:", e)
+            raise HTTPException(status_code=401, detail=str(e))
 
         finally:
             server.quit()

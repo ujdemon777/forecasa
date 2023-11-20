@@ -1,7 +1,9 @@
 from pydantic import BaseModel, EmailStr, constr
 from datetime import datetime
 from typing import Optional
-from enums import StatusEnum
+from Enum import StatusEnum
+
+
 class UserBaseSchema(BaseModel):
     user_name: Optional[str] = ""
     email: EmailStr
@@ -23,26 +25,8 @@ class LoginUserSchema(BaseModel):
     password: constr(min_length=8)
 
 
-
 class Token(BaseModel):
     access_token: str
-    token_type: str
-
-
-class DataToken(BaseModel):
-    id: Optional[str] = None
-
-
-
-
-class CompanyFilters(BaseModel):
-    child_sponsor: Optional[str] = None
-    transaction_type: Optional[list] = None
-    transaction_tags: Optional[list] = None
-    counties: Optional[list] = None
-    amount: Optional[dict]= None
-    page: Optional[int] = 1
-    page_size: Optional[int] = 500000
 
 
 class EmailVerificationRequest(BaseModel):

@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from models.response import Response
+from fastapi.responses import JSONResponse
 import json
 from datetime import datetime
 
@@ -36,14 +36,12 @@ class Blobs:
                 blob_client.upload_blob(json.dumps(existing_data), blob_type="BlockBlob", overwrite=True)
                 return unique_company_ids
 
-            
-        
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Failed to get the blob in the container. Error: {str(e)}")
+            raise HTTPException(status_code=400, detail=f"Failed to get the blob in the container. Error: {str(e)}")
         
         
 
-    async def add_config_blob(container_client):
+    async def add_config_blob(container_client,filters):
         try:
 
             blob_client = container_client.get_blob_client("config_blob.json")
@@ -51,20 +49,20 @@ class Blobs:
             data={}
             data["source"] = "forecasa"
             data["created_at"] = str(datetime.utcnow())
+            data["filters"] = filters
 
             
             if not blob_client.exists():
                 blob_client.upload_blob(json.dumps(data), blob_type="BlockBlob",overwrite=True)
-                return Response(data, f"config blob created successfully." , 200 , False)
+                return JSONResponse({"msg": "config blob created successfully"})
+            
             else:
                 downloader = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
                 blob_text = downloader.readall()
                 existing_data = json.loads(blob_text) if blob_text and blob_text.startswith("[") else [json.loads(blob_text)]
                 existing_data.append(data)  
                 blob_client.upload_blob(json.dumps(existing_data), blob_type="BlockBlob", overwrite=True)
-                return Response(data, f"companies added successfully." , 200 , False)
-
-            
+                return JSONResponse({"msg": "config blob updated successfully"})
         
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Failed to get the blob in the container. Error: {str(e)}")
+            raise HTTPException(status_code=400, detail=f"Failed to get the blob in the container. Error: {str(e)}")
