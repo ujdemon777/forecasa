@@ -12,7 +12,7 @@ class UserBaseSchema(BaseModel):
     is_authenticated: bool = False
     status: Optional[StatusEnum] = "enabled"
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class CreateUserSchema(UserBaseSchema):
     role: str = 'user'
