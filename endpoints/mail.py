@@ -23,7 +23,7 @@ async def request_verification_code(email_verification_request: EmailVerificatio
         mail = await Email.sendMail(rec_email)
 
         if mail.status_code == 200:
-            return JSONResponse({"msg": "Verification email sent successfully"})
+            return {"msg": "Verification email sent successfully"}
         
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

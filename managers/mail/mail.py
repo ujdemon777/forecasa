@@ -34,7 +34,7 @@ class Email:
             msg["To"] = rec_email
 
             server.sendmail(sender_email, rec_email, msg.as_string())
-            return JSONResponse({"msg": f"Email has been sent to {rec_email}","status_code":200})
+            return {"msg": f"Email has been sent to {rec_email}","status_code":200}
 
         except smtplib.SMTPAuthenticationError as e:
             raise HTTPException(status_code=401, detail=str(e))

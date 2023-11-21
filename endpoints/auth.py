@@ -45,7 +45,7 @@ async def create_user(payload: CreateUserSchema):
         session.commit()
         session.refresh(new_user)
 
-        return JSONResponse({"msg": "User registered successfully", "user_id": new_user.id})
+        return {"msg": "User registered successfully", "user_id": new_user.id}
 
     except Exception as e:
         raise HTTPException(status_code=400,
@@ -72,7 +72,7 @@ def login(user_detail: dict = Body(..., description="requires email and password
                             detail='Incorrect Password')
 
     access_token = create_access_token(data={"user_id":user.id})
-    return JSONResponse({"msg":"bearer token generated","token":access_token})
+    return {"msg":"bearer token generated","token":access_token}
 
 
 
@@ -80,7 +80,7 @@ def login(user_detail: dict = Body(..., description="requires email and password
 async def get_current_user(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
-    return JSONResponse({"current_user":current_user})
+    return {"current_user":current_user}
 
 
 @router.post('/users')
@@ -99,7 +99,7 @@ async def get_all_users(
         users = session.query(User).options(defer(User.password)).order_by(
             desc(User.created_at)).limit(page_size).offset((page-1)*page_size).all()
         
-        return JSONResponse({"msg": "users retrieved successfully","users":users})
+        return {"msg": "users retrieved successfully","users":users}
 
     except Exception as e:
         raise HTTPException(status_code=400,detail=str(e))
@@ -111,7 +111,7 @@ async def get_user_by_id(id:int ,current_user: str = Depends(get_current_user)):
     user = session.query(User).options(defer(User.password)).filter(User.id == id).first()
     
     if user:
-        return JSONResponse({"msg": "User retrieved successfully", "user": user})
+        return {"msg": "User retrieved successfully", "user": user}
     else:
         raise HTTPException(status_code=404, detail="User not found")
 

@@ -67,7 +67,7 @@ async def create_blob(request:Request,current_user: str = Depends(get_current_us
 
     blob_client.upload_blob(json.dumps(company), blob_type="BlockBlob",overwrite=True)
 
-    return JSONResponse({"msg": "company_ids added successfully"})
+    return {"msg": "company_ids added successfully"}
 
 
 
@@ -83,7 +83,7 @@ async def get_blobs(current_user: str = Depends(get_current_user)):
     blobs=[]
     for blob in blob_list:
         blobs.append(f"File Name: {blob.name}")
-    return JSONResponse({"msg": f"{len(blobs)} blobs retrieved", "blobs": blobs})
+    return {"msg": f"{len(blobs)} blobs retrieved", "blobs": blobs}
 
     
 
@@ -100,7 +100,7 @@ async def get_particular_blob(blob: str = Query(..., description="requires name 
         downloader = blob_client.download_blob(max_concurrency=1, encoding='UTF-8')
         blob = json.loads(downloader.readall())
 
-        return JSONResponse({"msg": f"blobs retrieved successfully", "blob": blob})
+        return {"msg": f"blobs retrieved successfully", "blob": blob}
     
     else:
         raise HTTPException(status_code=400, detail=f"No Blob Found for {blob}")
@@ -119,7 +119,7 @@ async def delete_particular_blob(blob: str = Query(..., description="requires na
     if blob_client.exists():
         blob_client.delete_blob()
 
-        return JSONResponse({"message": f"Blob {blob} deleted successfully"})
+        return {"message": f"Blob {blob} deleted successfully"}
     else:
         raise HTTPException(status_code=400, detail=f"No Blobs Found")
     

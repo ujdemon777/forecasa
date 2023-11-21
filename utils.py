@@ -53,7 +53,7 @@ async def upload_file(file: UploadFile = File(...)):
         contents = await file.read()
         try:
             json_data = json.loads(contents.decode("utf-8"))
-            return {"msg": "JSON file received", "data": json_data, "status_code":200}
+            return {"msg": "JSON file received", "data": json_data, "status_code":200,"type":"json"}
         except json.JSONDecodeError:
             pass  
 
@@ -61,7 +61,7 @@ async def upload_file(file: UploadFile = File(...)):
         contents = await file.read()
         try:
             df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
-            return {"msg": "CSV file received", "data": df.to_dict(),"status_code":200}
+            return {"msg": "CSV file received", "data": df.to_dict(),"status_code":200,"type":"csv"}
         except pd.errors.ParserError:
             pass 
 

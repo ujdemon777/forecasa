@@ -40,7 +40,7 @@ async def get_leads(current_user: str = Depends(get_current_user),
 
     leads = session.query(Company).order_by(
                     desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
-    return JSONResponse({"leads" : leads, "msg":"All leads retrieved successfully"})
+    return {"leads" : leads, "msg":"All leads retrieved successfully"}
 
 
 
@@ -107,10 +107,10 @@ async def filter_leads(current_user: str = Depends(get_current_user),
         if filters:
             leads = session.query(Company).filter(and_(*filters)).order_by(
                     desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
-            return JSONResponse({"leads":leads, "msg":"leads generated"})
+            return {"leads":leads, "msg":"leads generated"}
 
         else:
-            return JSONResponse({"msg":"No Filters Provided"})
+            return {"msg":"No Filters Provided"}
 
     except Exception as e:
         raise HTTPException(status_code=400,detail=f"error occurred while fetching leads data:{str(e)}")
@@ -152,10 +152,15 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
     try:
         response = await upload_file(file)
         if response.get("status_code") == 200:
-            companies=response.get('data' , dict()).get("companies",[])
+            if response.get("type") == "json":
+                companies=response.get('data' , dict()).get("companies",[])
+
+            elif response.get("type") == "csv":
+                print(response.get('data',dict()))
+                pass
 
         if not companies:
-            raise JSONResponse({"msg":"No Companies Provided in request"})
+            raise {"msg":"No Companies Provided in request"}
 
 
         added_company_ids = []
@@ -198,7 +203,7 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
         session.commit()
         session.close()
 
-        return JSONResponse({"companies_id":added_company_ids, "msg":"leads data added successfully"})
+        return {"companies_id":added_company_ids, "msg":"leads data added successfully"}
         
     except Exception as e:
         session.rollback()
@@ -217,7 +222,7 @@ async def get_min_max_txn(username = Depends(authenticate_user)):
     max_avg_mortgage_amount = session.query(func.max(Company.average_mortgage_amount)).scalar()
 
     data={'min_mortgage':min_mortgage,'max_mortgage':max_mortgage,'min_avg_mortgage_amount':min_avg_mortgage_amount, 'max_avg_mortgage_amount':max_avg_mortgage_amount}
-    return JSONResponse({"data": data, "msg":"mortage data retrieved successfully"})
+    return {"data": data, "msg":"mortage data retrieved successfully"}
 
 
 

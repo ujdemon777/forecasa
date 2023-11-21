@@ -21,7 +21,7 @@ session = database.get_db_session(engine)
 async def read_forecasa_data(username = Depends(authenticate_user)):
     
     data = session.query(Transaction).all()
-    return JSONResponse({"msg":"data retrieved successfully."})
+    return {"msg":"data retrieved successfully."}
 
 
 @router.post("/add", response_description="forecasa data added into the database")
@@ -70,4 +70,4 @@ async def add_forecasa_data(request: Request, username = Depends(authenticate_us
         data = {"transaction": transaction.id}
         session.commit()
         session.close()
-    return JSONResponse({"msg": "transaction data added successfully"})
+    return {"msg": "transaction data added successfully"}

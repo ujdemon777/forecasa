@@ -52,7 +52,7 @@ class Filters:
 
                 if response.status_code == 200:  
                     data = response.json()
-                    return JSONResponse({"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)})
+                    return {"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)}
 
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))

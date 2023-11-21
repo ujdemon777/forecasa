@@ -57,7 +57,7 @@ async def fetch_company_data(filters: CompanyFilters,
 
             if response.status_code == 200:  
                 companies = response.json()
-                return JSONResponse({"companies": companies.get("companies", []), "companies_total_count": companies.get("companies_total_count", 0)})
+                return {"companies": companies.get("companies", []), "companies_total_count": companies.get("companies_total_count", 0)}
             
     except httpx.ReadTimeout as e:
         raise HTTPException(status_code=408, detail=f"HTTP Request Timed Out:{str(e)}")
@@ -83,7 +83,7 @@ async def fetch_company_txn_data(company_id: int = Query(..., description="requi
 
             if response.status_code == 200:  
                 company_transaction = response.json()
-                return JSONResponse({"transactions": company_transaction.get("transactions", [])})
+                return {"transactions": company_transaction.get("transactions", [])}
 
     except httpx.ReadTimeout as e:
         raise HTTPException(status_code=408, detail=f"HTTP Request Timed Out:{str(e)}")
