@@ -7,6 +7,7 @@ from models.user import User
 from config.db import Database
 from dotenv import load_dotenv, find_dotenv
 import os
+from sqlalchemy.exc import SQLAlchemyError
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
@@ -50,6 +51,10 @@ def verify_token_access(token: str):
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
     token = verify_token_access(token)
-
-    user = session.query(User).options(defer(User.password)).filter(User.id == token.get('user_id')).first()
-    return user
+    try:
+        user = session.query(User).options(defer(User.password)).filter(User.id == token.get('user_id')).first()
+        return user
+    except SQLAlchemyError as e:
+        session.rollback()
+        raise HTTPException(status_code=400,
+                            detail=f'error:{str(e)}')

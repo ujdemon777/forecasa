@@ -61,5 +61,5 @@ CREATE TABLE IF NOT EXISTS contact (
     contact_type ENUM('primary', 'secondary'), 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     company_id INT,
-    FOREIGN KEY (company_id) REFERENCES company(company_id)
+    FOREIGN KEY (company_id) REFERENCES company(id)
 )ENGINE = INNODB;

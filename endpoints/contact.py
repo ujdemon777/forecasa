@@ -9,7 +9,7 @@ from schemas.contact import ContactBaseSchema
 
 
 router = APIRouter(
-    prefix="",
+    prefix="/contact",
     tags=["Contact"],
     responses={404: {"description": "Not found"}},
 )
@@ -18,7 +18,7 @@ database = Database()
 engine = database.get_db_connection()
 session = database.get_db_session(engine)
 
-@router.post('/contact')
+@router.post('/add')
 async def create_contact(contact: ContactBaseSchema):
  
     new_contact = session.query(Contact).filter(Contact.email == contact.company_id).first()
