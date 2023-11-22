@@ -33,4 +33,4 @@ class Company(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    contacts = relationship("Contact", back_populates="owner")
+    # contacts = relationship("Contact", back_populates="owner")
