@@ -174,7 +174,7 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
         for cmp in filter(lambda x: x['id'] in unique_company_ids, companies):
             print(f"debug{cmp.get('id')}")
             company= Company()
-            company.company_id = cmp.get('id')
+            company.id = cmp.get('id')
             company.name= cmp.get('name')
             company.dba = cmp.get('dba')
             company.tag_names = cmp.get('tag_names')

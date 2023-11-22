@@ -1,7 +1,7 @@
 company schema:
 
 CREATE TABLE IF NOT EXISTS company(
-	company_id INT PRIMARY KEY,
+	id INT PRIMARY KEY,
 	name VARCHAR(128),
 	dba JSON DEFAULT NULL,
 	tag_names JSON DEFAULT NULL,
@@ -47,3 +47,19 @@ CREATE TABLE IF NOT EXISTS user(
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE = INNODB;
+
+
+
+CREATE TABLE IF NOT EXISTS contact (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    primary_contact VARCHAR(255),
+    secondary_contact VARCHAR(255),
+    linkedIn VARCHAR(255),
+    contact_type ENUM('primary', 'secondary'), 
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    company_id INT,
+    FOREIGN KEY (company_id) REFERENCES company(company_id)
+)ENGINE = INNODB;

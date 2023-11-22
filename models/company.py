@@ -8,7 +8,7 @@ Base = declarative_base()
 class Company(Base):
     __tablename__ = "company"
 
-    company_id = Column(INTEGER,primary_key=True, index=True)
+    id = Column(INTEGER,primary_key=True, index=True)
     name = Column(String)
     dba = Column(JSON)
     tag_names = Column(JSON)

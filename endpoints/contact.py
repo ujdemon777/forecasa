@@ -18,28 +18,28 @@ database = Database()
 engine = database.get_db_connection()
 session = database.get_db_session(engine)
 
-# @router.post('/contact')
-# async def create_contact(payload: ContactBaseSchema):
+@router.post('/contact')
+async def create_contact(contact: ContactBaseSchema):
  
-#     contact = session.query(Contact).filter(Contact.email == payload.email.lower()).first()
-#     if contact:
-#         raise HTTPException(status_code=409,
-#                             detail='Contact already exist')
+    new_contact = session.query(Contact).filter(Contact.email == contact.company_id).first()
+    if new_contact:
+        raise HTTPException(status_code=409,
+                            detail='Contact already exist')
     
-#     try:
-#         payload.email = payload.email.lower()
-#         payload.created_at = datetime.utcnow()
-#         new_contact = Contact(**payload.model_dump())
+    try:
+        contact.email = contact.email.lower()
+        contact.created_at = datetime.utcnow()
+        new_contact = Contact(**contact.model_dump())
 
-#         session.add(new_contact)
-#         session.commit()
-#         session.refresh(new_contact)
+        session.add(new_contact)
+        session.commit()
+        session.refresh(new_contact)
 
-#         return {"msg": "Contact registered successfully", "contact_id": new_contact.id}
+        return {"msg": "Contact registered successfully", "contact_id": new_contact.id}
 
-#     except Exception as e:
-#         raise HTTPException(status_code=400,
-#                             detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=400,
+                            detail=str(e))
     
     
 

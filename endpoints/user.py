@@ -20,12 +20,6 @@ session = database.get_db_session(engine)
 
 
 
-@router.get('/current_user')
-async def get_current_user(
-    current_user: Annotated[User, Depends(get_current_user)]
-):
-    return {"current_user":current_user}
-
 
 @router.get('/all')              
 async def get_all_users(
