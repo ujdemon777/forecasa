@@ -3,16 +3,15 @@ from models.company import Company
 from config.db import Database
 from datetime import datetime
 from sqlalchemy import and_, or_, func
-from dotenv import load_dotenv, find_dotenv
 from utils import authenticate_user
 from utils import upload_file
 from fastapi.responses import JSONResponse
 from Oauth import get_current_user
 from sqlalchemy import desc
+from sqlalchemy.exc import IntegrityError
 
 
 
-_ = load_dotenv(find_dotenv())
 
 router = APIRouter(
     prefix="/leads",
@@ -151,21 +150,28 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
 
     try:
         response = await upload_file(file)
+        companies = []
         if response.get("status_code") == 200:
             if response.get("type") == "json":
                 companies=response.get('data' , dict()).get("companies",[])
 
             elif response.get("type") == "csv":
-                print(response.get('data',dict()))
-                pass
+                companies=response.get('data',[])
 
         if not companies:
             raise {"msg":"No Companies Provided in request"}
 
 
-        added_company_ids = []
+        company_ids = []
 
-        for cmp in companies:
+        for company in companies:
+            company_ids.append(company.get('id'))
+
+        existing_company_ids = [company_id[0] for company_id in session.query(Company.company_id).filter(Company.company_id.in_(set(company_ids))).all()]
+        unique_company_ids = list(set(company_ids) - set(existing_company_ids))
+
+
+        for cmp in filter(lambda x: x['id'] in unique_company_ids, companies):
             print(f"debug{cmp.get('id')}")
             company= Company()
             company.company_id = cmp.get('id')
@@ -196,18 +202,23 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
             
             session.add(company)
             session.flush()
-            added_company_ids.append(cmp.get('id'))
+            # added_company_ids.append(cmp.get('id'))
             # get id of the inserted product
             # session.refresh(company, attribute_names=['id'])
             # data = {"data": company.id}
         session.commit()
         session.close()
 
-        return {"companies_id":added_company_ids, "msg":"leads data added successfully"}
-        
+        return {"companies_id":unique_company_ids, "msg":"leads data added successfully"}
+    
+    except IntegrityError as e:
+        session.rollback()
+        raise HTTPException(status_code=409,detail=f"Integrity error occurred while adding leads data:{str(e)}")
+
+
     except Exception as e:
         session.rollback()
-        raise HTTPException(status_code=400,detail=f"Integrity error occurred while adding leads data:{str(e)}")
+        raise HTTPException(status_code=400,detail=f"error occurred while adding leads data:{str(e)}")
 
 
 

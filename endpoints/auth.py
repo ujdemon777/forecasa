@@ -1,19 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Body
-from fastapi.responses import JSONResponse
-from Oauth import create_access_token,get_current_user
-from dotenv import load_dotenv, find_dotenv
+from fastapi import APIRouter, HTTPException, Body
+from Oauth import create_access_token
 from models.user import User
 from config.db import Database
 from schemas.auth import CreateUserSchema
 from datetime import datetime
 from utils import hash_password,verify_password
-from typing import Annotated
-from sqlalchemy.orm import defer
-from sqlalchemy import desc
 
 
-
-_ = load_dotenv(find_dotenv())
 
 router = APIRouter(
     prefix="/auth",
@@ -76,42 +69,5 @@ def login(user_detail: dict = Body(..., description="requires email and password
 
 
 
-@router.get('/current_user')
-async def get_current_user(
-    current_user: Annotated[User, Depends(get_current_user)]
-):
-    return {"current_user":current_user}
 
-
-@router.post('/users')
-async def get_all_users(
-    current_user: str = Depends(get_current_user),
-    page: int = Query(None,ge=1),
-    page_size: int = Query(None,ge=1)):
-  
-    if not page:
-        page=1
-
-    if not page_size:
-        page_size=100
-
-    try:
-        users = session.query(User).options(defer(User.password)).order_by(
-            desc(User.created_at)).limit(page_size).offset((page-1)*page_size).all()
-        
-        return {"msg": "users retrieved successfully","users":users}
-
-    except Exception as e:
-        raise HTTPException(status_code=400,detail=str(e))
-
-
-@router.get('/{id}')
-async def get_user_by_id(id:int ,current_user: str = Depends(get_current_user)):
-    
-    user = session.query(User).options(defer(User.password)).filter(User.id == id).first()
-    
-    if user:
-        return {"msg": "User retrieved successfully", "user": user}
-    else:
-        raise HTTPException(status_code=404, detail="User not found")
 

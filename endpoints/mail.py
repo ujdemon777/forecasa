@@ -1,11 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from Oauth import get_current_user
-from dotenv import load_dotenv, find_dotenv
 from managers.mail.mail import Email
 from schemas.auth import EmailVerificationRequest
 
-_ = load_dotenv(find_dotenv())
 
 router = APIRouter(
     prefix="/mail",

@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, INTEGER, String, DateTime, Enum
+from sqlalchemy import Column, INTEGER, String, DateTime, Enum, ForeignKey
 from sqlalchemy import func
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -16,3 +17,6 @@ class Contact(Base):
     linkedin =  Column(String)
     contact_type = Column(Enum)
     created_at = Column(DateTime, default=func.now())
+    company_id = Column(INTEGER, ForeignKey("company.id"))
+
+    owner = relationship("Company", back_populates="contact")

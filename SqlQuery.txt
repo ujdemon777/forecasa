@@ -1,0 +1,49 @@
+company schema:
+
+CREATE TABLE IF NOT EXISTS company(
+	company_id INT PRIMARY KEY,
+	name VARCHAR(128),
+	dba JSON DEFAULT NULL,
+	tag_names JSON DEFAULT NULL,
+	leads VARCHAR(128),
+	assignment_of_mortgage_transactions INT,
+	deed_transactions INT,
+	last_lender_used VARCHAR(1028),
+	other_lenders_used VARCHAR(1028),
+	last_mortgage_date VARCHAR(128),
+    last_transaction_date VARCHAR(128),
+    mortgage_transactions INT,
+    party_count INT,
+    satisfaction_of_mortgage_transactions INT,
+    transactions_as_borrower INT,
+    transactions_as_buyer INT,
+    transactions_as_lender INT,
+    transactions_as_seller INT,
+    last_county VARCHAR(128),
+    principal_address VARCHAR(128),
+    principal_name VARCHAR(128),
+    average_mortgage_amount INT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = INNODB;
+
+
+
+
+
+
+
+user schema: 
+
+CREATE TABLE IF NOT EXISTS user(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	user_name VARCHAR(128),
+	email VARCHAR(128) UNIQUE NOT NULL,
+	password VARCHAR(128) NOT NULL,
+	phone VARCHAR(128),
+	role VARCHAR(128) DEFAULT 'user' NOT NULL,
+	status VARCHAR(128) NOT NULL,
+	is_authenticated BOOLEAN DEFAULT FALSE,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = INNODB;

@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, INTEGER, String, TIMESTAMP, BIGINT, BOOLEAN, text , JSON, DateTime
 from sqlalchemy import func
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -31,3 +32,5 @@ class Company(Base):
     average_mortgage_amount = Column(INTEGER)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    contacts = relationship("Contact", back_populates="owner")

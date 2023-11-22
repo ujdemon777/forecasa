@@ -1,12 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException,Query,Body
 from fastapi.responses import JSONResponse
 import os,httpx
-from dotenv import load_dotenv, find_dotenv
 from schemas.filters import CompanyFilters
 from Oauth import get_current_user
 import json
 
-_ = load_dotenv(find_dotenv())
 
 router = APIRouter(
     prefix="/company",
