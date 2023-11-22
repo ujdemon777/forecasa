@@ -21,7 +21,7 @@ session = database.get_db_session(engine)
 @router.post('/add')
 async def create_contact(contact: ContactBaseSchema):
  
-    new_contact = session.query(Contact).filter(Contact.email == contact.company_id).first()
+    new_contact = session.query(Contact).filter(Contact.company_id == contact.company_id).first()
     if new_contact:
         raise HTTPException(status_code=409,
                             detail='Contact already exist')

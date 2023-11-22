@@ -61,6 +61,7 @@ async def upload_file(file: UploadFile = File(...)):
         contents = await file.read()
         try:
             df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
+            # df.fillna(None, inplace=True)
             return {"msg": "CSV file received", "data": df.to_dict(orient='records'),"status_code":200,"type":"csv"}
         except pd.errors.ParserError:
             pass 

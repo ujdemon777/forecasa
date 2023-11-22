@@ -167,7 +167,7 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
         for company in companies:
             company_ids.append(company.get('id'))
 
-        existing_company_ids = [company_id[0] for company_id in session.query(Company.company_id).filter(Company.company_id.in_(set(company_ids))).all()]
+        existing_company_ids = [company_id[0] for company_id in session.query(Company.id).filter(Company.id.in_(set(company_ids))).all()]
         unique_company_ids = list(set(company_ids) - set(existing_company_ids))
 
 
