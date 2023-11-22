@@ -19,4 +19,4 @@ class Contact(Base):
     created_at = Column(DateTime, default=func.now())
     company_id = Column(INTEGER, ForeignKey("company.id"))
 
-    owner = relationship("Company", back_populates="contact")
+    companies = relationship("Company", back_populates="contact")

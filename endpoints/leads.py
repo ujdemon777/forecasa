@@ -36,13 +36,23 @@ async def get_leads(current_user: str = Depends(get_current_user),
 
     if not page_size:
         page_size=100
+    try:
+        leads = session.query(Company).order_by(
+                        desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
+        return {"leads" : leads, "msg":"All leads retrieved successfully"}
+    
+    except Exception as e:
+        raise HTTPException(status_code=400,detail=f"error occurred while fetching leads data:{str(e)}")
 
-    leads = session.query(Company).order_by(
-                    desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
-    return {"leads" : leads, "msg":"All leads retrieved successfully"}
-
-
-
+@router.get('/{id}')
+async def get_lead_by_id(id:int ,current_user: str = Depends(get_current_user)):
+    
+    lead = session.query(Company).filter(Company.id == id).first()
+    
+    if lead:
+        return {"msg": "User retrieved successfully", "lead": lead}
+    else:
+        raise HTTPException(status_code=404, detail="Lead not found")
 
 @router.post("/filter")
 async def filter_leads(current_user: str = Depends(get_current_user),
