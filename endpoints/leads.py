@@ -50,7 +50,7 @@ async def get_lead_by_id(id:int ,current_user: str = Depends(get_current_user)):
     lead = session.query(Company).filter(Company.id == id).first()
     
     if lead:
-        return {"msg": "User retrieved successfully", "lead": lead}
+        return {"msg": "Lead retrieved successfully", "lead": lead}
     else:
         raise HTTPException(status_code=404, detail="Lead not found")
 
@@ -119,7 +119,7 @@ async def filter_leads(current_user: str = Depends(get_current_user),
             return {"leads":leads, "msg":"leads generated"}
 
         else:
-            return {"msg":"No Filters Provided"}
+            raise HTTPException(status_code=400,detail=f"No filters provided")
 
     except Exception as e:
         raise HTTPException(status_code=400,detail=f"error occurred while fetching leads data:{str(e)}")
