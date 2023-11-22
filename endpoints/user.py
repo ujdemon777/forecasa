@@ -9,7 +9,7 @@ from sqlalchemy import desc
 
 
 router = APIRouter(
-    prefix="user",
+    prefix="/user",
     tags=["User"],
     responses={404: {"description": "Not found"}},
 )
