@@ -9,7 +9,7 @@ from sqlalchemy import desc
 
 
 router = APIRouter(
-    prefix="",
+    prefix="user",
     tags=["User"],
     responses={404: {"description": "Not found"}},
 )
@@ -27,7 +27,7 @@ async def get_current_user(
     return {"current_user":current_user}
 
 
-@router.post('/users')              # get/post
+@router.get('/all')              
 async def get_all_users(
     current_user: str = Depends(get_current_user),
     page: int = Query(None,ge=1),
