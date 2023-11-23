@@ -1,7 +1,9 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, INTEGER, String, TIMESTAMP, BIGINT, BOOLEAN, text , JSON, DateTime
+from sqlalchemy import Column, INTEGER, String, TIMESTAMP, BIGINT, BOOLEAN, text , JSON, DateTime,Enum,ForeignKey
 from sqlalchemy import func
 from sqlalchemy.orm import relationship
+
+# from models.contact import Contact
 
 Base = declarative_base()
 
@@ -33,4 +35,21 @@ class Company(Base):
     created_at = Column(DateTime, default=func.now(),index=True)
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
-    # contacts = relationship("Contact", back_populates="companies")
+    contacts = relationship("Contact", back_populates="company")
+
+
+
+class Contact(Base):
+    __tablename__ = 'contact'
+
+    id = Column(INTEGER, primary_key=True, autoincrement=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    email = Column(String, nullable=False)
+    primary_contact = Column(String, nullable=True)
+    secondary_contact = Column(String, nullable=True)
+    linkedIn =  Column(String)
+    created_at = Column(DateTime, default=func.now())
+    company_id = Column(INTEGER, ForeignKey("company.id"))
+
+    company = relationship("Company", back_populates="contacts")

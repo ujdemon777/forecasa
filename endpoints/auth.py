@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Body, Depends
 from Oauth import create_access_token
 from models.user import User
 from config.db import Database
-from schemas.auth import CreateUserSchema
+from schemas.user import CreateUserSchema
 from datetime import datetime
 from utils import hash_password,verify_password
 from typing import Annotated

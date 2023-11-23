@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from Oauth import get_current_user
-from models.contact import Contact
+from models.company import Contact
 from config.db import Database
 from sqlalchemy import desc
 from datetime import datetime
@@ -21,10 +21,11 @@ session = database.get_db_session(engine)
 @router.post('/add')
 async def create_contact(contact: ContactBaseSchema):
  
-    new_contact = session.query(Contact).filter(Contact.company_id == contact.company_id).first()
-    if new_contact:
-        raise HTTPException(status_code=409,
-                            detail='Contact already exist')
+    # new_contact = session.query(Contact).filter(Contact.company_id == contact.company_id).first()
+    # print(new_contact)
+    # if new_contact:
+    #     raise HTTPException(status_code=409,
+    #                         detail='Contact already exist')
     
     try:
         contact.email = contact.email.lower()
@@ -42,6 +43,15 @@ async def create_contact(contact: ContactBaseSchema):
                             detail=str(e))
     
     
+@router.get("/test")
+def get_contacts_for_company_id(company_id: int):
+    contacts= session.query(Contact).filter(Contact.company_id == company_id).all()
+    if contacts is None:
+        raise HTTPException(status_code=404, detail="company not found")
+    return contacts
+
+
+
 
 # @router.get('/contacts')
 # async def get_all_contacts(

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from Enum import ContactEnum
+# from Enum import ContactEnum
 from datetime import datetime
 
 class ContactBaseSchema(BaseModel):
@@ -10,7 +10,6 @@ class ContactBaseSchema(BaseModel):
     primary_contact: Optional[str] = ""
     secondary_contact: Optional[str] = ""
     linkedIn: Optional[str] = ""
-    contact_type: Optional[ContactEnum] = "primary"
     created_at: datetime = None
     company_id : int
 
