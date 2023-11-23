@@ -76,4 +76,7 @@ def login(user_detail: dict = Body(..., description="requires email and password
 async def get_current_user(
     current_user: Annotated[User, Depends(get_current_user)]
 ):
-    return {"user":current_user}
+    if current_user:
+        return {"user":current_user}
+    else:
+        raise HTTPException(status_code=400,detail=f'user not found')

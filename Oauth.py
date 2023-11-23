@@ -52,8 +52,14 @@ def verify_token_access(token: str):
 def get_current_user(token: str = Depends(oauth2_scheme)):
     token = verify_token_access(token)
     try:
-        user = session.query(User).options(defer(User.password)).filter(User.id == token.get('user_id')).first()
-        return user
+        if token.get('user_id') is not None:
+            user = session.query(User).options(defer(User.password)).filter(User.id == token.get('user_id')).first()
+            if user:
+                return user
+            else:
+                raise HTTPException(status_code=400,detail=f'error: user not found ')
+                
+
     except SQLAlchemyError as e:
         session.rollback()
         raise HTTPException(status_code=400,
