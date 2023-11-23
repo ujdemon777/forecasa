@@ -49,6 +49,7 @@ class Contact(Base):
     primary_contact = Column(String, nullable=True)
     secondary_contact = Column(String, nullable=True)
     linkedIn =  Column(String)
+    contact_type = Column(String,nullable=False)
     created_at = Column(DateTime, default=func.now())
     company_id = Column(INTEGER, ForeignKey("company.id"))
 

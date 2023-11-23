@@ -118,7 +118,7 @@ async def filter_leads(current_user: str = Depends(get_current_user),
 
         if filters:
             leads = session.query(Company).filter(and_(*filters)).order_by(
-                    desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
+                    desc(Company.id)).limit(page_size).offset((page-1)*page_size).all()
             return {"leads":leads, "msg":"leads generated"}
 
         else:
