@@ -30,6 +30,13 @@ CREATE TABLE IF NOT EXISTS company(
 
 
 
+CREATE INDEX idx_id ON company (id);
+CREATE INDEX idx_mortgage_transactions ON company (mortgage_transactions);
+CREATE INDEX idx_last_mortgage_date ON company (last_mortgage_date);
+CREATE INDEX idx_last_transaction_date ON company (last_transaction_date);
+CREATE INDEX idx_average_mortgage_amount ON company (average_mortgage_amount);
+CREATE INDEX idx_last_lender_used ON company (last_lender_used);
+CREATE INDEX idx_created_at ON company (created_at);
 
 
 
@@ -61,5 +68,6 @@ CREATE TABLE IF NOT EXISTS contact (
     contact_type ENUM('primary', 'secondary'), 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     company_id INT,
+    CONSTRAINT `contact_ibfk_1`
     FOREIGN KEY (company_id) REFERENCES company(id)
 )ENGINE = INNODB;

@@ -58,7 +58,7 @@ def get_contacts_for_id_or_company_id(id: int = Query(None),company_id: int = Qu
 
     if contact is None:
         raise HTTPException(status_code=404, detail="no contact found for this id")
-    return contact
+    return {"msg": "contact retrieved successfully","contact":contact}
 
 
 
@@ -84,7 +84,7 @@ async def get_all_contacts(
     
     
 @router.delete('')
-async def get_user_by_id(id:int ,current_user: str = Depends(get_current_user)):
+async def delete_contact_by_id(id:int ,current_user: str = Depends(get_current_user)):
     
     contact_query = session.query(Contact).filter(Contact.id == id)
     contact = contact_query.first()
@@ -101,34 +101,25 @@ async def get_user_by_id(id:int ,current_user: str = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="contact not found")
     
 
+@router.put('/{contact_id}')
+def update_contact(
+    contact_id: int,
+    contact_data: ContactBaseSchema,
+    current_user: str = Depends(get_current_user)
+):
+    try:
+        contact= session.query(Contact).filter(Contact.id == contact_id)
 
+        if not contact:
+            raise HTTPException(status_code=404, detail=f'No contact with this id: {contact_id} found')
 
-# @router.put('/contacts')
-# async def get_all_contacts(contact: ContactBaseSchema,
-#     current_user: str = Depends(get_current_user),
-#     payload: dict = Body(None, description=""),
-#     page: int = Query(None,ge=1),
-#     page_size: int = Query(None,ge=1)):
-  
-#     if not page:
-#         page=1
+        contact.update(contact_data.model_dump(exclude_unset=True), synchronize_session=False)
+        session.commit()
 
-#     if not page_size:
-#         page_size=100
+        return {"msg": "Contact updated successfully"}
 
-#     try:
-#         contact_query = session.query(Contact).filter(Contact.company_id == payload.company_id).first()
+    except Exception as e:
+        session.rollback()
+        raise HTTPException(status_code=400, detail=str(e))
 
-#         if not contact_query:
-#             raise HTTPException(status_code=200,
-#                             detail=f'No contact with this id: {payload.company_id} found')
-        
-#         contact.first_name = payload.first_name
-        
-#         contact.update(post.dict(exclude_unset=True), synchronize_session=False)
-        
-#         return {"msg": "contacts retrieved successfully","users":contact}
-
-#     except Exception as e:
-#         raise HTTPException(status_code=400,detail=str(e))
 

@@ -38,7 +38,7 @@ async def get_leads(current_user: str = Depends(get_current_user),
         page_size=100
     try:
         leads = session.query(Company).order_by(
-                        desc(Company.created_at)).limit(page_size).offset((page-1)*page_size).all()
+                        (Company.id)).all()
         return {"leads" : leads, "msg":"All leads retrieved successfully"}
     
     except Exception as e:
