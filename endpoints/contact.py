@@ -93,7 +93,7 @@ async def delete_contact_by_id(id:int ,current_user: str = Depends(get_current_u
     
     if contact:
         contact_query.delete(synchronize_session=False)
-        session.refresh(Contact(), attribute_names=['id'])
+        # session.refresh(Contact(), attribute_names=['id'])
         session.commit()
         session.close()
         return {"msg": "Contact deleted successfully"}
@@ -108,12 +108,12 @@ def update_contact(
     current_user: str = Depends(get_current_user)
 ):
     try:
-        contact= session.query(Contact).filter(Contact.id == contact_id)
-
+        contact_query= session.query(Contact).filter(Contact.id == contact_id)
+        contact = contact_query.first()
         if not contact:
             raise HTTPException(status_code=404, detail=f'No contact with this id: {contact_id} found')
 
-        contact.update(contact_data.model_dump(exclude_unset=True), synchronize_session=False)
+        contact_query.update(contact_data.model_dump(exclude_unset=True), synchronize_session=False)
         session.commit()
 
         return {"msg": "Contact updated successfully"}
