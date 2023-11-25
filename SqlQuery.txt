@@ -68,6 +68,6 @@ CREATE TABLE IF NOT EXISTS contact (
     contact_type ENUM('primary', 'secondary'), 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     company_id INT,
-    CONSTRAINT `contact_ibfk_1`
+    CONSTRAINT contact_ibfk_1
     FOREIGN KEY (company_id) REFERENCES company(id)
 )ENGINE = INNODB;

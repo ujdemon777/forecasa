@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException,Query,Body
-from fastapi.responses import JSONResponse
 import os,httpx
 from schemas.filters import CompanyFilters
 from Oauth import get_current_user
@@ -137,10 +136,8 @@ async def fetch_company_data(
 
         url = "https://webapp.forecasa.com/api/v1/companies"  
         response = await client.get(url, params=params)
-        print(f"res1{response.url}")
 
         if response.status_code == 200:
-            print("uk")
             try:
                 data = response.json()
                 return data
@@ -148,12 +145,10 @@ async def fetch_company_data(
                 raise HTTPException(status_code=500, detail="Error parsing JSON data from the API")
             
         elif response.status_code == 429: 
-                print("debug")
                 cookie = response.headers.get("set-cookie")
                 cookies = {"forecasa": cookie}
 
                 params.pop('api_key')
                 response1 = await client.get(url, cookies=cookies,params=params)
-                print(f"res2{response1.url}")
                 data = response1.json()
                 return {"states": data}

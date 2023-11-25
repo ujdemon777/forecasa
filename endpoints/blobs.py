@@ -6,7 +6,6 @@ from datetime import datetime
 from managers.blobs import Blobs
 from managers.filters import Filters
 from Oauth import get_current_user
-from fastapi.responses import JSONResponse
 
 
 _ = load_dotenv(find_dotenv())

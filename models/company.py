@@ -42,7 +42,7 @@ class Company(Base):
 class Contact(Base):
     __tablename__ = 'contact'
 
-    id = Column(INTEGER, primary_key=True, autoincrement=True)
+    id = Column(INTEGER, primary_key=True, autoincrement=True, index=True)
     first_name = Column(String)
     last_name = Column(String)
     email = Column(String, nullable=False)

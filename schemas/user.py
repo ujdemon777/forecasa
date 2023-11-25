@@ -5,7 +5,7 @@ from Enum import StatusEnum
 
 
 class UserBaseSchema(BaseModel):
-    name: constr(min_length=8) = ""
+    name: constr(min_length=3) = ""
     email: EmailStr
     password: constr(min_length=8)
     phone: Optional[str] = ""

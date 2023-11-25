@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body,File, UploadFile
 from models.company import Company
-from config.db import Database
+from models.user import User
+from config.db import get_db
 from datetime import datetime
 from sqlalchemy import and_, or_, func
 from utils import authenticate_user
 from utils import upload_file
-from fastapi.responses import JSONResponse
 from Oauth import get_current_user
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 
 
@@ -19,61 +20,61 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-database = Database()
-engine = database.get_db_connection()
-session = database.get_db_session(engine)
-
-
 
 @router.get("/read")
-async def get_leads(current_user: str = Depends(get_current_user),
-        page: int = Query(None,ge=1),
-        page_size: int = Query(None,ge=1)
+async def get_leads(current_user: User = Depends(get_current_user),
+        db: Session = Depends(get_db),
+        page: int = Query(1,ge=1),
+        page_size: int = Query(100,ge=1)
     ):
 
-    if not page:
-        page=1
-
-    if not page_size:
-        page_size=100
     try:
-        leads = session.query(Company).order_by(
-                        (Company.id)).all()
+        leads = db.query(Company).order_by(
+                        desc(Company.id)).limit(page_size).offset((page-1)*page_size).all()
         return {"leads" : leads, "msg":"All leads retrieved successfully"}
     
+    except HTTPException as http_exception:
+        raise http_exception
+    
     except Exception as e:
-        raise HTTPException(status_code=400,detail=f"error occurred while fetching leads data:{str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    finally:
+        db.close()
     
 
 
 @router.get('/{id}')
-async def get_lead_by_id(id:int ,current_user: str = Depends(get_current_user)):
+async def get_lead_by_id(id:int ,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
+    try:
+        lead = db.query(Company).filter(Company.id == id).first()
+        
+        if lead:
+            return {"msg": "Lead retrieved successfully", "lead": lead}
+        else:
+            raise HTTPException(status_code=404, detail="Lead not found")
+        
+    except HTTPException as http_exception:
+        raise http_exception
     
-    lead = session.query(Company).filter(Company.id == id).first()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     
-    if lead:
-        return {"msg": "Lead retrieved successfully", "lead": lead}
-    else:
-        raise HTTPException(status_code=404, detail="Lead not found")
+    finally:
+        db.close()
     
 
 @router.post("/filter")
 async def filter_leads(current_user: str = Depends(get_current_user),
+        db: Session = Depends(get_db),
         mortgage_transactions: dict = Body(None, description="Minimum & Maximum value of the range"),
         last_mortgage_date: dict = Body(None, description="Start date & End date of the range"),
         last_transaction_date: dict = Body(None, description="Start date & End date of the range (YYYY-MM-DD)"),
         average_mortgage_amount: dict = Body(None, description="Minimum & Maximum value of the range"),
         last_lender_used: list = Query(None, description="List of categories to filter"),
-        page: int = Query(None,ge=1),
-        page_size: int = Query(None,ge=1)
+        page: int = Query(1,ge=1),
+        page_size: int = Query(100,ge=1)
     ):
-
-    if not page:
-        page=1
-
-    if not page_size:
-        page_size=100
-    
 
     try:
         filters = []
@@ -117,20 +118,28 @@ async def filter_leads(current_user: str = Depends(get_current_user),
 
 
         if filters:
-            leads = session.query(Company).filter(and_(*filters)).order_by(
+            leads = db.query(Company).filter(and_(*filters)).order_by(
                     desc(Company.id)).limit(page_size).offset((page-1)*page_size).all()
             return {"leads":leads, "msg":"leads generated"}
-
+        
         else:
-            raise HTTPException(status_code=400,detail=f"No filters provided")
-
+            leads = db.query(Company).order_by(
+                    desc(Company.id)).limit(page_size).offset((page-1)*page_size).all()
+            return {"leads":leads, "msg":"leads generated"}
+    
+    except HTTPException as http_exception:
+        raise http_exception
+    
     except Exception as e:
-        raise HTTPException(status_code=400,detail=f"error occurred while fetching leads data:{str(e)}")
+        raise HTTPException(status_code=500,detail=f"{str(e)}")
+    
+    finally:
+        db.close()
 
 
 
 @router.post("/add")
-async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get_current_user)):
+async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
 
     """
     Adding leads Company Data to the Database
@@ -172,7 +181,7 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
                 companies=response.get('data',[])
 
         if not companies:
-            raise {"msg":"No Companies Provided in request"}
+            return {"msg":"No Companies Provided in request"}
 
 
         company_ids = []
@@ -180,7 +189,7 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
         for company in companies:
             company_ids.append(company.get('id'))
 
-        existing_company_ids = [company_id[0] for company_id in session.query(Company.id).filter(Company.id.in_(set(company_ids))).all()]
+        existing_company_ids = [company_id[0] for company_id in db.query(Company.id).filter(Company.id.in_(set(company_ids))).all()]
         unique_company_ids = list(set(company_ids) - set(existing_company_ids))
 
 
@@ -213,42 +222,54 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
             company.updated_at = datetime.utcnow()
         
             
-            session.add(company)
-            session.flush()
-            # added_company_ids.append(cmp.get('id'))
-            # get id of the inserted product
-            # session.refresh(company, attribute_names=['id'])
+            db.add(company)
+            db.flush()
+         
+            # db.refresh(company, attribute_names=['id'])
             # data = {"data": company.id}
-        session.commit()
-        session.close()
+        db.commit()
+        db.close()
 
         return {"companies_id":unique_company_ids, "msg":"leads data added successfully"}
     
     except IntegrityError as e:
-        session.rollback()
+        db.rollback()
         raise HTTPException(status_code=409,detail=f"Integrity error occurred while adding leads data:{str(e)}")
 
-
+    except HTTPException as http_exception:
+        db.rollback()
+        raise http_exception
+    
     except Exception as e:
-        session.rollback()
-        raise HTTPException(status_code=400,detail=f"error occurred while adding leads data:{str(e)}")
-
+        db.rollback()
+        raise HTTPException(status_code=500,detail=f"{str(e)}")
+    
+    finally:
+        db.close()
 
 
 
 @router.get("/value")
-async def get_min_max_txn(username = Depends(authenticate_user)):
+async def get_min_max_txn(username = Depends(authenticate_user),db: Session = Depends(get_db)):
     
-    min_mortgage = session.query(func.min(Company.mortgage_transactions)).scalar()
-    max_mortgage = session.query(func.max(Company.mortgage_transactions)).scalar()
+    try:
+        min_mortgage = db.query(func.min(Company.mortgage_transactions)).scalar()
+        max_mortgage = db.query(func.max(Company.mortgage_transactions)).scalar()
 
-    min_avg_mortgage_amount = session.query(func.min(Company.average_mortgage_amount)).scalar()
-    max_avg_mortgage_amount = session.query(func.max(Company.average_mortgage_amount)).scalar()
+        min_avg_mortgage_amount = db.query(func.min(Company.average_mortgage_amount)).scalar()
+        max_avg_mortgage_amount = db.query(func.max(Company.average_mortgage_amount)).scalar()
 
-    data={'min_mortgage':min_mortgage,'max_mortgage':max_mortgage,'min_avg_mortgage_amount':min_avg_mortgage_amount, 'max_avg_mortgage_amount':max_avg_mortgage_amount}
-    return {"data": data, "msg":"mortage data retrieved successfully"}
+        data={'min_mortgage':min_mortgage,'max_mortgage':max_mortgage,'min_avg_mortgage_amount':min_avg_mortgage_amount, 'max_avg_mortgage_amount':max_avg_mortgage_amount}
+        return {"data": data, "msg":"mortage data retrieved successfully"}
 
-
+    except HTTPException as http_exception:
+        raise http_exception
+    
+    except Exception as e:
+        raise HTTPException(status_code=500,detail=f"{str(e)}")
+    
+    finally:
+        db.close()
 
 
 
