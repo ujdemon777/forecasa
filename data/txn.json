@@ -1,0 +1,1741 @@
+{
+    "transactions": [
+        {
+            "fc_transaction_id": "County:Nyc_ID:2023000154623",
+            "fc_house_id": "County:Nyc_ID:BROOKLYN049380008_530 EAST 39TH STREET",
+            "grantor": "TANNI REALTY LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "TANNI REALTY LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2023-07-11T11:37:06.409Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2023-06-21",
+            "signer": null,
+            "transaction_date": "2023-06-09",
+            "transaction_number": "2023000154623",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 235012609,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$790,000.00",
+            "address": "530 EAST 39TH ST",
+            "fc_party_company": "TANNI REALTY LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:11328-MTG",
+            "fc_house_id": null,
+            "grantor": "AGUIRRE LINO",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "AGUIRRE LINO",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-19T02:52:07.525Z",
+            "fc_updated_at": "2023-10-27T20:08:44.823Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2023-02-21",
+            "signer": null,
+            "transaction_date": "2023-02-14",
+            "transaction_number": "11328",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 212547418,
+                        "company_id": null,
+                        "party_name": "AGUIRRE LINO",
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "lender",
+                            "specialty_lender",
+                            "private_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "party_name": "BOBKATT INVESTORS INC",
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$510,000.00",
+            "address": null,
+            "fc_party_company": "AGUIRRE LINO",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "lender",
+                "specialty_lender",
+                "private_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2023000043417",
+            "fc_house_id": "County:Nyc_ID:BRONX033060038_2975 VALENTINE AVENUE",
+            "grantor": "DAZZA REALTY CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "DAZZA REALTY CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2023-03-15T09:05:15.598Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2023-02-15",
+            "signer": null,
+            "transaction_date": "2023-02-06",
+            "transaction_number": "2023000043417",
+            "transaction_type": "RELEASE",
+            "lat": "40.872052",
+            "lng": "-73.88623",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 32799455,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": "2975 VALENTINE AVE",
+            "fc_party_company": "DAZZA REALTY CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2023-282-MTGSAT",
+            "fc_house_id": null,
+            "grantor": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-18T08:50:05.298Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2023-01-02",
+            "signer": null,
+            "transaction_date": "2022-12-26",
+            "transaction_number": "2023-282",
+            "transaction_type": "RELEASE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211753670,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 211754157,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$765,000.00",
+            "address": null,
+            "fc_party_company": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2023000012660",
+            "fc_house_id": "County:Nyc_ID:BRONX042970022_2078 MATTHEWS AVE",
+            "grantor": "2078 MATTHEWS HOLDINGS CORPORATION",
+            "grantee": "FENCO ASSOCIATES LLC;BOBKATT INVESTORS INC",
+            "party_company": "2078 MATTHEWS HOLDINGS CORPORATION",
+            "cross_party_company": "Bobkatt Investors INC;FENCO ASSOCIATES LLC",
+            "county": "Nyc",
+            "fc_created_at": "2023-02-15T08:12:04.995Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2023-01-13",
+            "signer": null,
+            "transaction_date": "2022-12-14",
+            "transaction_number": "2023000012660",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 187494842,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    },
+                    {
+                        "tags": [
+                            "specialty_lender",
+                            "private_lender",
+                            "lender"
+                        ],
+                        "party_id": 2510094,
+                        "company_id": 31865,
+                        "company_name": "FENCO ASSOCIATES LLC"
+                    }
+                ]
+            },
+            "amount": "$550,000.00",
+            "address": "2078 MATTHEWS AVE",
+            "fc_party_company": "2078 MATTHEWS HOLDINGS CORPORATION",
+            "fc_cross_party_company": "Bobkatt Investors INC;FENCO ASSOCIATES LLC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Essex-Nj_ID:2022100954",
+            "fc_house_id": null,
+            "grantor": "524 NORWOOD MANAGEMENT LLC;MARTES JOSE A;VASQUEZ ADRIANA",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "VASQUEZ ADRIANA;MARTES JOSE A;524 NORWOOD MANAGEMENT LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Essex-Nj",
+            "fc_created_at": "2022-12-02T04:50:50.855Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2022-11-17",
+            "signer": null,
+            "transaction_date": "2022-11-10",
+            "transaction_number": "2022100954",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.787215",
+            "lng": "-74.24706",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 4668144,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 121673107,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 111234535,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$457,000.00",
+            "address": null,
+            "fc_party_company": "VASQUEZ ADRIANA;MARTES JOSE A;524 NORWOOD MANAGEMENT LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW JERSEY",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "34013",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Essex-Nj_ID:2022100955",
+            "fc_house_id": null,
+            "grantor": "524 NORWOOD MANAGEMENT LLC;MARTES JOSE A;VASQUEZ ADRIANA",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "MARTES JOSE A;VASQUEZ ADRIANA;Jose A Martes, Adriana Vasquez - (524 Norwood Management LLC) - (NJ)",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Essex-Nj",
+            "fc_created_at": "2022-12-02T04:50:22.088Z",
+            "fc_updated_at": "2023-11-17T10:45:29.633Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2022-11-17",
+            "signer": null,
+            "transaction_date": "2022-11-10",
+            "transaction_number": "2022100955",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.787215",
+            "lng": "-74.24706",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 121673107,
+                        "company_id": null,
+                        "party_name": "MARTES JOSE A",
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 4668144,
+                        "company_id": null,
+                        "party_name": "VASQUEZ ADRIANA",
+                        "company_name": null
+                    },
+                    {
+                        "tags": [
+                            "borrower",
+                            "negative_remark_borrower",
+                            "investor",
+                            "private_lender_borrower",
+                            "residential_investor"
+                        ],
+                        "party_id": 111234535,
+                        "company_id": 120718,
+                        "party_name": "524 NORWOOD MANAGEMENT LLC",
+                        "company_name": "Jose A Martes, Adriana Vasquez - (524 Norwood Management LLC) - (NJ)"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "party_name": "BOBKATT INVESTORS INC",
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": null,
+            "fc_party_company": "MARTES JOSE A;VASQUEZ ADRIANA;Jose A Martes, Adriana Vasquez - (524 Norwood Management LLC) - (NJ)",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW JERSEY",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "34013",
+            "all_company_tags": [
+                "borrower",
+                "negative_remark_borrower",
+                "investor",
+                "private_lender_borrower",
+                "residential_investor",
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Essex-Nj_ID:2022094970",
+            "fc_house_id": null,
+            "grantor": "524 NORWOOD MANAGEMENT LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "Jose A Martes, Adriana Vasquez - (524 Norwood Management LLC) - (NJ)",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Essex-Nj",
+            "fc_created_at": "2022-11-09T04:35:05.661Z",
+            "fc_updated_at": "2023-11-17T10:43:39.449Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2022-10-25",
+            "signer": null,
+            "transaction_date": "2022-10-18",
+            "transaction_number": "2022094970",
+            "transaction_type": "NOTICE",
+            "lat": "40.787215",
+            "lng": "-74.24706",
+            "fc_10_yr_t_note": "0.0",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "borrower",
+                            "negative_remark_borrower",
+                            "investor",
+                            "private_lender_borrower",
+                            "residential_investor"
+                        ],
+                        "party_id": 111234535,
+                        "company_id": 120718,
+                        "party_name": "524 NORWOOD MANAGEMENT LLC",
+                        "company_name": "Jose A Martes, Adriana Vasquez - (524 Norwood Management LLC) - (NJ)"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "party_name": "BOBKATT INVESTORS INC",
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": null,
+            "fc_party_company": "Jose A Martes, Adriana Vasquez - (524 Norwood Management LLC) - (NJ)",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW JERSEY",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "34013",
+            "all_company_tags": [
+                "borrower",
+                "negative_remark_borrower",
+                "investor",
+                "private_lender_borrower",
+                "residential_investor",
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:28910-MTG",
+            "fc_house_id": null,
+            "grantor": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "BLESSING MASTER ONE CORP;BLESSING MASTER 1 CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-18T19:45:10.462Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2022-03-04",
+            "signer": null,
+            "transaction_date": "2022-02-25",
+            "transaction_number": "28910",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "1.92",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211754157,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 211753670,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$765,000.00",
+            "address": null,
+            "fc_party_company": "BLESSING MASTER ONE CORP;BLESSING MASTER 1 CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Miami-Dade_ID:2022R169820",
+            "fc_house_id": null,
+            "grantor": "BAYPORT FUNDING LLC;11724 NE 6 AVE LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "Bayport Funding LLC;11724 NE 6 AVE LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Miami-Dade",
+            "fc_created_at": "2022-03-01T15:56:04.721Z",
+            "fc_updated_at": "2023-10-23T06:46:38.065Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2022-02-28",
+            "signer": null,
+            "transaction_date": "2022-02-23",
+            "transaction_number": "2022R169820",
+            "transaction_type": "ASSIGNMENT",
+            "lat": "25.608967",
+            "lng": "-80.498667",
+            "fc_10_yr_t_note": "1.92",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender",
+                            "form_d_filer",
+                            "sec_filer",
+                            "private_lender_borrower",
+                            "private_loan_buyer"
+                        ],
+                        "party_id": 504895,
+                        "company_id": 232,
+                        "party_name": "BAYPORT FUNDING LLC",
+                        "company_name": "Bayport Funding LLC"
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 37928791,
+                        "company_id": null,
+                        "party_name": "11724 NE 6 AVE LLC",
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "lender",
+                            "private_lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "party_name": "BOBKATT INVESTORS INC",
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$325,000.00",
+            "address": null,
+            "fc_party_company": "Bayport Funding LLC;11724 NE 6 AVE LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "FLORIDA",
+            "msa_name": "Miami-Fort Lauderdale-West Palm Beach, FL Metro Area",
+            "fip_code": "12086",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender",
+                "form_d_filer",
+                "sec_filer",
+                "private_lender_borrower",
+                "private_loan_buyer"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2021000478562",
+            "fc_house_id": "County:Nyc_ID:BROOKLYN016050065_851 LAFAYETTE AVENUE",
+            "grantor": "851 LAFAYETTE LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "851 LAFAYETTE LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2022-01-18T20:58:56.138Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2021-12-06",
+            "signer": null,
+            "transaction_date": "2021-11-23",
+            "transaction_number": "2021000478562",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "1.67",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 3372480,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$200,000.00",
+            "address": "851 LAFAYETTE AVE",
+            "fc_party_company": "851 LAFAYETTE LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2022000279207",
+            "fc_house_id": "County:Nyc_ID:BRONX039230015_1559 WHITE PLAINS ROAD",
+            "grantor": "1557 WP LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "1557 WP LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2022-08-16T02:43:55.463Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2022-07-13",
+            "signer": null,
+            "transaction_date": "2021-11-03",
+            "transaction_number": "2022000279207",
+            "transaction_type": "RELEASE",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "1.6",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "borrower"
+                        ],
+                        "party_id": 2217680,
+                        "company_id": 29401,
+                        "company_name": "1557 WP LLC"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": "1559 WHITE PLAINS RD",
+            "fc_party_company": "1557 WP LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "borrower",
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2021000251323",
+            "fc_house_id": "County:Nyc_ID:BRONX033060038_2975 VALENTINE AVENUE",
+            "grantor": "DAZZA REALTY CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "DAZZA REALTY CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2022-01-16T23:25:11.546Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2021-07-01",
+            "signer": null,
+            "transaction_date": "2021-06-23",
+            "transaction_number": "2021000251323",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.872052",
+            "lng": "-73.88623",
+            "fc_10_yr_t_note": "1.5",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 32799455,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$130,000.00",
+            "address": "2975 VALENTINE AVE",
+            "fc_party_company": "DAZZA REALTY CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2021-16434-MTG",
+            "fc_house_id": null,
+            "grantor": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-16T01:38:47.887Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2021-02-10",
+            "signer": null,
+            "transaction_date": "2021-02-03",
+            "transaction_number": "2021-16434",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "1.15",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211753670,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 211754157,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$300,000.00",
+            "address": null,
+            "fc_party_company": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2021000076100",
+            "fc_house_id": "County:Nyc_ID:BROOKLYN020440026_85 CARLTON AVENUE",
+            "grantor": "BAYPORT FUNDING LLC",
+            "grantee": "BOBKATT INVESTORS INC ISAOA/ATIMA",
+            "party_company": "Bayport Funding LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2022-06-29T05:20:08.290Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2021-03-03",
+            "signer": null,
+            "transaction_date": "2021-01-29",
+            "transaction_number": "2021000076100",
+            "transaction_type": "ASSIGNMENT",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "1.11",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "form_d_filer",
+                            "specialty_lender",
+                            "lender",
+                            "private_lender",
+                            "private_loan_buyer",
+                            "sec_filer"
+                        ],
+                        "party_id": 504895,
+                        "company_id": 232,
+                        "party_name": "BAYPORT FUNDING LLC",
+                        "company_name": "Bayport Funding LLC"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "lender",
+                            "specialty_lender",
+                            "private_lender"
+                        ],
+                        "party_id": 66479714,
+                        "company_id": 10638,
+                        "party_name": "BOBKATT INVESTORS INC ISAOA/ATIMA",
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": "85 CARLTON AVE",
+            "fc_party_company": "Bayport Funding LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "form_d_filer",
+                "specialty_lender",
+                "lender",
+                "private_lender",
+                "private_loan_buyer",
+                "sec_filer"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2021000076101",
+            "fc_house_id": "County:Nyc_ID:BROOKLYN020440026_85 CARLTON AVENUE",
+            "grantor": "BAYPORT FUNDING LLC",
+            "grantee": "BOBKATT INVESTORS INC ISAOA/ATIMA",
+            "party_company": "Bayport Funding LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2022-06-29T05:20:08.455Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2021-03-03",
+            "signer": null,
+            "transaction_date": "2021-01-29",
+            "transaction_number": "2021000076101",
+            "transaction_type": "ASSIGNMENT",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "1.11",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "form_d_filer",
+                            "specialty_lender",
+                            "lender",
+                            "private_lender",
+                            "private_loan_buyer",
+                            "sec_filer"
+                        ],
+                        "party_id": 504895,
+                        "company_id": 232,
+                        "party_name": "BAYPORT FUNDING LLC",
+                        "company_name": "Bayport Funding LLC"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "lender",
+                            "specialty_lender",
+                            "private_lender"
+                        ],
+                        "party_id": 66479714,
+                        "company_id": 10638,
+                        "party_name": "BOBKATT INVESTORS INC ISAOA/ATIMA",
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": "85 CARLTON AVE",
+            "fc_party_company": "Bayport Funding LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "form_d_filer",
+                "specialty_lender",
+                "lender",
+                "private_lender",
+                "private_loan_buyer",
+                "sec_filer"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2021000076102",
+            "fc_house_id": "County:Nyc_ID:BROOKLYN020440026_85 CARLTON AVENUE",
+            "grantor": "BAYPORT FUNDING LLC",
+            "grantee": "BOBKATT INVESTORS INC ISAOA/ATIMA",
+            "party_company": "Bayport Funding LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nyc",
+            "fc_created_at": "2022-06-29T05:20:08.620Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2021-03-03",
+            "signer": null,
+            "transaction_date": "2021-01-29",
+            "transaction_number": "2021000076102",
+            "transaction_type": "ASSIGNMENT",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "1.11",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "form_d_filer",
+                            "specialty_lender",
+                            "lender",
+                            "private_lender",
+                            "private_loan_buyer",
+                            "sec_filer"
+                        ],
+                        "party_id": 504895,
+                        "company_id": 232,
+                        "party_name": "BAYPORT FUNDING LLC",
+                        "company_name": "Bayport Funding LLC"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "lender",
+                            "specialty_lender",
+                            "private_lender"
+                        ],
+                        "party_id": 66479714,
+                        "company_id": 10638,
+                        "party_name": "BOBKATT INVESTORS INC ISAOA/ATIMA",
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": "85 CARLTON AVE",
+            "fc_party_company": "Bayport Funding LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "form_d_filer",
+                "specialty_lender",
+                "lender",
+                "private_lender",
+                "private_loan_buyer",
+                "sec_filer"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2020-71051-MTGSAT",
+            "fc_house_id": null,
+            "grantor": "RIYA HOLDING CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "RIYA HOLDING CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-16T21:57:09.153Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-08-10",
+            "signer": null,
+            "transaction_date": "2020-08-03",
+            "transaction_number": "2020-71051",
+            "transaction_type": "RELEASE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "0.56",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211514691,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$325,000.00",
+            "address": null,
+            "fc_party_company": "RIYA HOLDING CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Westchester-Ny_ID:600583167",
+            "fc_house_id": null,
+            "grantor": "154 PENNSYLVANIA AVE LLC",
+            "grantee": "FENCO ASSOC;BOBKATT INVESTORS INC",
+            "party_company": "154 PENNSYLVANIA AVE LLC",
+            "cross_party_company": "FENCO ASSOC;Bobkatt Investors INC",
+            "county": "Westchester-Ny",
+            "fc_created_at": "2022-06-11T23:43:22.323Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-07-27",
+            "signer": null,
+            "transaction_date": "2020-07-20",
+            "transaction_number": "600583167",
+            "transaction_type": "RELEASE",
+            "lat": "41.151481",
+            "lng": "-73.753391",
+            "fc_10_yr_t_note": "0.62",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 60690254,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": null,
+                        "party_id": 60663666,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": null,
+            "fc_party_company": "154 PENNSYLVANIA AVE LLC",
+            "fc_cross_party_company": "FENCO ASSOC;Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36119",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2020-64690-MTGSAT",
+            "fc_house_id": null,
+            "grantor": "RIYA HOLDING CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "RIYA HOLDING CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-17T05:33:57.215Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-07-22",
+            "signer": null,
+            "transaction_date": "2020-07-15",
+            "transaction_number": "2020-64690",
+            "transaction_type": "RELEASE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "0.64",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211514691,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$230,000.00",
+            "address": null,
+            "fc_party_company": "RIYA HOLDING CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2020-51726-MTGSAT",
+            "fc_house_id": null,
+            "grantor": "LEX & ZAM INC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "LEX & ZAM INC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-16T12:43:59.531Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-06-24",
+            "signer": null,
+            "transaction_date": "2020-06-17",
+            "transaction_number": "2020-51726",
+            "transaction_type": "RELEASE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "0.74",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211818791,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$275,000.00",
+            "address": null,
+            "fc_party_company": "LEX & ZAM INC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2020-16422-MTG",
+            "fc_house_id": null,
+            "grantor": "DOCSPACE LLC;PATHWAY ENTERPRISE LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "DOCSPACE LLC;PATHWAY ENTERPRISE LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-18T17:17:07.730Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-02-18",
+            "signer": null,
+            "transaction_date": "2020-02-11",
+            "transaction_number": "2020-16422",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "1.59",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 152569526,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 213236802,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$400,000.00",
+            "address": null,
+            "fc_party_company": "DOCSPACE LLC;PATHWAY ENTERPRISE LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2020-16423-MTGAGR",
+            "fc_house_id": null,
+            "grantor": "RP CAPITAL GROUP LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "RP CAPITAL GROUP LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-15T15:18:55.383Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-02-18",
+            "signer": null,
+            "transaction_date": "2020-02-11",
+            "transaction_number": "2020-16423",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "1.59",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211388339,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": null,
+            "fc_party_company": "RP CAPITAL GROUP LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2020-5420-MTG",
+            "fc_house_id": null,
+            "grantor": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-18T06:55:51.756Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-01-16",
+            "signer": null,
+            "transaction_date": "2020-01-09",
+            "transaction_number": "2020-5420",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "1.85",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211753670,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 211754157,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$285,000.00",
+            "address": null,
+            "fc_party_company": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2020000001048",
+            "fc_house_id": "County:Nyc_ID:BROOKLYN011670007_727 WASHINGTON AVENUE",
+            "grantor": "BOBKATT INVESTORS INC",
+            "grantee": "MODERN BANK N.A",
+            "party_company": "Bobkatt Investors INC",
+            "cross_party_company": "Modern Bank",
+            "county": "Nyc",
+            "fc_created_at": "2022-06-29T01:45:49.047Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-01-02",
+            "signer": null,
+            "transaction_date": "2019-10-08",
+            "transaction_number": "2020000001048",
+            "transaction_type": "ASSIGNMENT",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "1.54",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "conventional_lender_working_with_llcs",
+                            "conventional_lender",
+                            "lender"
+                        ],
+                        "party_id": 4233339,
+                        "company_id": 55845,
+                        "company_name": "Modern Bank"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": "727 WASHINGTON AVE",
+            "fc_party_company": "Bobkatt Investors INC",
+            "fc_cross_party_company": "Modern Bank",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender",
+                "conventional_lender_working_with_llcs",
+                "conventional_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nyc_ID:2020000001047",
+            "fc_house_id": "County:Nyc_ID:BROOKLYN011670007_727 WASHINGTON AVENUE",
+            "grantor": "BOBKATT INVESTORS INC",
+            "grantee": "MODERN BANK N.A",
+            "party_company": "Bobkatt Investors INC",
+            "cross_party_company": "Modern Bank",
+            "county": "Nyc",
+            "fc_created_at": "2022-06-29T01:45:49.213Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2020-01-02",
+            "signer": null,
+            "transaction_date": "2019-10-08",
+            "transaction_number": "2020000001047",
+            "transaction_type": "ASSIGNMENT",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "1.54",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "conventional_lender_working_with_llcs",
+                            "conventional_lender",
+                            "lender"
+                        ],
+                        "party_id": 4233339,
+                        "company_id": 55845,
+                        "company_name": "Modern Bank"
+                    }
+                ]
+            },
+            "amount": "$0.00",
+            "address": "727 WASHINGTON AVE",
+            "fc_party_company": "Bobkatt Investors INC",
+            "fc_cross_party_company": "Modern Bank",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender",
+                "conventional_lender_working_with_llcs",
+                "conventional_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2019-53279-MTG",
+            "fc_house_id": null,
+            "grantor": "TRIDENT EQUITIES LLC",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "TRIDENT EQUITIES LLC",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-20T00:36:43.011Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2019-06-28",
+            "signer": null,
+            "transaction_date": "2019-06-21",
+            "transaction_number": "2019-53279",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "2.07",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211883901,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$250,000.00",
+            "address": null,
+            "fc_party_company": "TRIDENT EQUITIES LLC",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:Nassau-Ny_ID:2019-36879-MTG",
+            "fc_house_id": null,
+            "grantor": "BLESSING MASTER 1 CORP;BLESSING MASTER ONE CORP",
+            "grantee": "BOBKATT INVESTORS INC",
+            "party_company": "BLESSING MASTER ONE CORP;BLESSING MASTER 1 CORP",
+            "cross_party_company": "Bobkatt Investors INC",
+            "county": "Nassau-Ny",
+            "fc_created_at": "2023-04-19T21:33:49.517Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2019-05-01",
+            "signer": null,
+            "transaction_date": "2019-04-24",
+            "transaction_number": "2019-36879",
+            "transaction_type": "MORTGAGE",
+            "lat": "40.732142",
+            "lng": "-73.585537",
+            "fc_10_yr_t_note": "2.53",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": null,
+                        "party_id": 211754157,
+                        "company_id": null,
+                        "company_name": null
+                    },
+                    {
+                        "tags": null,
+                        "party_id": 211753670,
+                        "company_id": null,
+                        "company_name": null
+                    }
+                ],
+                "cross_companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ]
+            },
+            "amount": "$220,000.00",
+            "address": null,
+            "fc_party_company": "BLESSING MASTER ONE CORP;BLESSING MASTER 1 CORP",
+            "fc_cross_party_company": "Bobkatt Investors INC",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36059",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        },
+        {
+            "fc_transaction_id": "County:NYC_ID:2019000103567",
+            "fc_house_id": "County:NYC_ID:BROOKLYN_01634_0067",
+            "grantor": "BOBKATT INVESTORS INC",
+            "grantee": null,
+            "party_company": "Bobkatt Investors INC",
+            "cross_party_company": null,
+            "county": "Nyc",
+            "fc_created_at": "2021-03-17T07:22:05.356Z",
+            "fc_updated_at": "2023-07-17T00:02:07.840Z",
+            "mortgage_maturity_date": null,
+            "recorded_date": "2019-04-01",
+            "signer": null,
+            "transaction_date": "2019-03-15",
+            "transaction_number": null,
+            "transaction_type": "ASSIGNMENT",
+            "lat": "40.774162",
+            "lng": "-73.969797",
+            "fc_10_yr_t_note": "2.59",
+            "transaction_meta": {
+                "companies": [
+                    {
+                        "tags": [
+                            "private_lender",
+                            "lender",
+                            "specialty_lender"
+                        ],
+                        "party_id": 4229354,
+                        "company_id": 10638,
+                        "company_name": "Bobkatt Investors INC"
+                    }
+                ],
+                "cross_companies": null
+            },
+            "amount": "$0.00",
+            "address": "489 MONROE ST",
+            "fc_party_company": "Bobkatt Investors INC",
+            "fc_cross_party_company": "-",
+            "state_name": "NEW YORK",
+            "msa_name": "New York-Newark-Jersey City, NY-NJ-PA Metro Area",
+            "fip_code": "36061",
+            "all_company_tags": [
+                "private_lender",
+                "lender",
+                "specialty_lender"
+            ]
+        }
+    ]
+}

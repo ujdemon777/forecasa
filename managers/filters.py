@@ -3,6 +3,7 @@ import os,httpx
 from dotenv import load_dotenv, find_dotenv
 from schemas.filters import CompanyFilters
 from fastapi.responses import JSONResponse
+from data import load_json
 
 
 _ = load_dotenv(find_dotenv())
@@ -45,14 +46,15 @@ class Filters:
                 params[f"transactions[q][amount_gteq]"] = filters.amount.get("min_value")
 
         try:
-            async with httpx.AsyncClient() as client:
+            # async with httpx.AsyncClient() as client:
 
-                url = "https://webapp.forecasa.com/api/v1/companies"  
-                response = await client.get(url, params=params)
+            #     url = "https://webapp.forecasa.com/api/v1/companies"  
+            #     response = await client.get(url, params=params)
 
-                if response.status_code == 200:  
-                    data = response.json()
-                    return {"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)}
+            #     if response.status_code == 200:  
+            #         data = response.json()
+            data = load_json.company_data
+            return {"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)}
 
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
