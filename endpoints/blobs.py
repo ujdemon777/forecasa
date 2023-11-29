@@ -58,11 +58,11 @@ async def create_blob(request:Request,current_user: str = Depends(get_current_us
         raise HTTPException(status_code=400,
                         detail='No Companies Provided in Request')
 
-    try:
-        config_blob = await Blobs.add_config_blob(container_client,filters)
+    # try:
+    #     config_blob = await Blobs.add_config_blob(container_client,filters)
     
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")
+    # except Exception as e:
+    #     raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")
 
     blob_client.upload_blob(json.dumps(company), blob_type="BlockBlob",overwrite=True)
 

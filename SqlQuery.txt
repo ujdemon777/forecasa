@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS company(
 ) ENGINE = INNODB;
 
 
+ALTER TABLE company ADD INDEX ...
 
 
 CREATE INDEX idx_id ON company (id);

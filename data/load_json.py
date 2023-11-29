@@ -1,7 +1,9 @@
 import json
+import os
 
-# file_path = "/Users/shtlpmac042/Desktop/forecasa/data/loads.json"
-
+cur_dir = os.getcwd()
+company_file_path = os.path.join(cur_dir , "data/leads.json")
+txn_file_path = os.path.join(cur_dir , "data/txn.json")
 
 
 def load_data_from_json(file_path):
@@ -9,5 +11,6 @@ def load_data_from_json(file_path):
         data = json.load(file)
     return data
 
-company_data = load_data_from_json("/Users/shtlpmac042/Desktop/forecasa/data/leads.json")
-txn_data = load_data_from_json("/Users/shtlpmac042/Desktop/forecasa/data/txn.json")
+
+company_data = load_data_from_json(company_file_path)
+txn_data = load_data_from_json(txn_file_path)
