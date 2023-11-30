@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body,File, UploadFile
+from managers.config import Config
+from models.blobs import Blob
 from models.company import Company
 from models.user import User
 from config.db import get_db
 from datetime import datetime
 from sqlalchemy import and_, or_, func
+from schemas.blobs import BlobSchema, Metadata, SourceSchema
 from utils import authenticate_user
 from utils import upload_file
 from Oauth import get_current_user
@@ -227,6 +230,13 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
          
             # db.refresh(company, attribute_names=['id'])
             # data = {"data": company.id}
+        existing_file= db.query(Blob).filter(Blob.file_name == file).first()
+        if existing_file:
+            meta_data = Metadata(created_at="", updated_at="", status="", filters='power-bi') 
+            source_schema = SourceSchema(bronze=meta_data,silver=meta_data)
+            payload = BlobSchema(file_name=file,meta_data=source_schema)
+            config_blob = await Config.update_config(payload,db)
+
         db.commit()
         db.close()
 

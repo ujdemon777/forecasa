@@ -3,9 +3,16 @@ import json,os
 from dotenv import load_dotenv, find_dotenv
 from azure.storage.blob import BlobServiceClient
 from datetime import datetime
+
+from requests import Session
+from config.db import get_db
 from managers.blobs import Blobs
 from managers.filters import Filters
 from Oauth import get_current_user
+from managers.config import Config
+from models.blobs import Blob
+from models.user import User
+from schemas.blobs import BlobSchema, Metadata, SourceSchema
 
 
 _ = load_dotenv(find_dotenv())
@@ -30,7 +37,7 @@ blob_service_client = BlobServiceClient(account_url=f"https://{azure_storage_acc
 
 
 @router.post("/blob")
-async def create_blob(request:Request,current_user: str = Depends(get_current_user)):
+async def create_blob(request:Request,current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
    
     filters = await request.json()
 
@@ -64,9 +71,24 @@ async def create_blob(request:Request,current_user: str = Depends(get_current_us
     # except Exception as e:
     #     raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")
 
+    try:
+        meta_data = Metadata(created_at="", updated_at="", status="", filters=filters) 
+        source_schema = SourceSchema(bronze=meta_data,silver=meta_data)
+        payload = BlobSchema(file_name=blob_name,meta_data=source_schema)
+
+        existing_file= db.query(Blob).filter(Blob.file_name == blob_name).first()
+
+        if not existing_file:
+            config_blob = await Config.create_config(current_user.id,payload,db)
+        # else:
+        #     config_blob = await Config.update_config(payload,db)
+    
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")
+
     blob_client.upload_blob(json.dumps(company), blob_type="BlockBlob",overwrite=True)
 
-    return {"msg": "company_ids added successfully"}
+    return {"msg": "company_ids added successfully","config_blog":config_blob}
 
 
 
