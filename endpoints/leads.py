@@ -225,20 +225,21 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
             company.updated_at = datetime.utcnow()
         
             
-            db.add(company)
-            db.flush()
+            # db.add(company)
+            # db.flush()
          
             # db.refresh(company, attribute_names=['id'])
             # data = {"data": company.id}
-        existing_file= db.query(Blob).filter(Blob.file_name == file).first()
+        existing_file= True
+        file = "lc_2023-12-01 07:10:23.865181.json"
         if existing_file:
-            meta_data = Metadata(created_at="", updated_at="", status="", filters='power-bi') 
+            meta_data = Metadata(created_at="", updated_at="", filters='power-bi') 
             source_schema = SourceSchema(bronze=meta_data,silver=meta_data)
             payload = BlobSchema(file_name=file,meta_data=source_schema)
             config_blob = await Config.update_config(payload,db)
 
-        db.commit()
-        db.close()
+        # db.commit()
+        # db.close()
 
         return {"companies_id":unique_company_ids, "msg":"leads data added successfully"}
     

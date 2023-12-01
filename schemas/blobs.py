@@ -5,7 +5,6 @@ from typing import Optional
 class Metadata(BaseModel):
     created_at: str = None
     updated_at: str = None
-    status: str = None
     filters: dict = None
 
 class SourceSchema(BaseModel):
@@ -18,7 +17,9 @@ class BlobSchema(BaseModel):
     updated_at: str = None
     meta_data: SourceSchema = None
     source: str = None
-    user_id : int = None
+    user_name : int = None
+    status : str = None
+    project_label : str = None
 
 
 

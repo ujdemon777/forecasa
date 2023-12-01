@@ -11,17 +11,20 @@ class Config:
     def __init__(self) -> None:
         pass
 
-    def create_metadata(source,filters):
+    def create_metadata(filters):
+
+        filters.pop("page", None)
+        filters.pop("page_size", None)
+        
         return {
             "created_at": str(datetime.utcnow()),
-            "updated_at": str(datetime.utcnow()),  
-            "status": source, 
+            "updated_at": str(datetime.utcnow()),   
             "filters": filters
         }
     
     
     @classmethod
-    async def create_config(cls,user_id, payload:BlobSchema, db: Session = Depends(get_db)):
+    async def create_config(cls,user_name, payload:BlobSchema, db: Session = Depends(get_db)):
        
         try:
             existing_file= db.query(Blob).filter(Blob.file_name == payload.file_name).first()
@@ -32,10 +35,11 @@ class Config:
             payload.created_at = str(datetime.utcnow())
             payload.updated_at = str(datetime.utcnow())
             payload.source = "forecasa"
-            payload.user_id = user_id
+            payload.user_name = user_name
+            payload.status = "bronze"
 
             metadata = {
-                "bronze": cls.create_metadata("bronze",payload.meta_data.bronze.filters),
+                "bronze": cls.create_metadata(payload.meta_data.bronze.filters),
                 "silver": None
             }
 
@@ -68,10 +72,13 @@ class Config:
                 raise HTTPException(status_code=404, detail=f'No file with this name: {payload.file_name} found')
             
 
-            payload.meta_data.silver = cls.create_metadata("sillver",payload.meta_data.silver.filters)
+            payload.meta_data.silver = cls.create_metadata(payload.meta_data.silver.filters)
             
+            
+            existing_file.status="silver"
             existing_file.meta_data=payload.meta_data.model_dump()
 
+            
             db.commit()
 
             return {"msg": "config updated successfully"}

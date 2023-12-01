@@ -39,7 +39,10 @@ blob_service_client = BlobServiceClient(account_url=f"https://{azure_storage_acc
 @router.post("/blob")
 async def create_blob(request:Request,current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
    
-    filters = await request.json()
+    data = await request.json()
+
+    filters = data.get('filters') or {}
+    project_label = data.get('project_label')
 
     company = await Filters.fetch_filtered_company_data(filters)
     company["source"] = "forecasa"
@@ -72,14 +75,14 @@ async def create_blob(request:Request,current_user: User = Depends(get_current_u
     #     raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")
 
     try:
-        meta_data = Metadata(created_at="", updated_at="", status="", filters=filters) 
+        meta_data = Metadata(created_at="", updated_at="", filters=filters) 
         source_schema = SourceSchema(bronze=meta_data,silver=meta_data)
-        payload = BlobSchema(file_name=blob_name,meta_data=source_schema)
+        payload = BlobSchema(file_name=blob_name,meta_data=source_schema,project_label=project_label)
 
         existing_file= db.query(Blob).filter(Blob.file_name == blob_name).first()
 
         if not existing_file:
-            config_blob = await Config.create_config(current_user.id,payload,db)
+            config_blob = await Config.create_config(current_user.name,payload,db)
         # else:
         #     config_blob = await Config.update_config(payload,db)
     
