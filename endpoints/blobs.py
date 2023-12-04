@@ -83,8 +83,6 @@ async def create_blob(request:Request,current_user: User = Depends(get_current_u
 
         if not existing_file:
             config_blob = await Config.create_config(current_user.name,payload,db)
-        # else:
-        #     config_blob = await Config.update_config(payload,db)
     
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")

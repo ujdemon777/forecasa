@@ -11,7 +11,7 @@ class Config:
     def __init__(self) -> None:
         pass
 
-    def create_metadata(filters):
+    async def create_metadata(filters):
 
         filters.pop("page", None)
         filters.pop("page_size", None)
@@ -39,8 +39,8 @@ class Config:
             payload.status = "bronze"
 
             metadata = {
-                "bronze": cls.create_metadata(payload.meta_data.bronze.filters),
-                "silver": None
+                'bronze': await cls.create_metadata(payload.meta_data.bronze.filters),
+                'silver' : {}
             }
 
             payload.meta_data = metadata
@@ -70,15 +70,17 @@ class Config:
             existing_file= db.query(Blob).filter(Blob.file_name == payload.file_name).first()
             if not existing_file:
                 raise HTTPException(status_code=404, detail=f'No file with this name: {payload.file_name} found')
-            
 
-            payload.meta_data.silver = cls.create_metadata(payload.meta_data.silver.filters)
+            existing_file.meta_data = existing_file.meta_data or {}
             
-            
+            silver_filters = await cls.create_metadata(payload.meta_data.silver.filters)
+
+            updated_metadata = existing_file.meta_data.copy()
+            updated_metadata['silver'] = silver_filters
+
+            existing_file.meta_data = updated_metadata
             existing_file.status="silver"
-            existing_file.meta_data=payload.meta_data.model_dump()
 
-            
             db.commit()
 
             return {"msg": "config updated successfully"}
