@@ -14,6 +14,12 @@ class UserBaseSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class UserUpdateSchema(BaseModel):
+    name: constr(min_length=3) = ""
+    phone: Optional[str] = ""
+    class Config:
+        from_attributes = True
+
 class CreateUserSchema(UserBaseSchema):
     role: str = 'user'
     created_at: datetime = None

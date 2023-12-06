@@ -4,6 +4,7 @@ from models.user import User
 from config.db import get_db
 from sqlalchemy.orm import defer,Session
 from sqlalchemy import desc
+from schemas.user import UserUpdateSchema
 
 
 
@@ -59,3 +60,31 @@ async def get_user_by_id(id:int ,current_user: str = Depends(get_current_user),d
     
     finally:
         db.close()
+
+
+@router.put('/{id}')
+async def update_user_by_id(id:int ,user_data: UserUpdateSchema ,current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
+    
+    try:
+        user = db.query(User).filter(User.id == id).first()
+        
+        if not user:
+            raise HTTPException(status_code=404, detail=f'No user with this id: {id} found')
+    
+        for field, value in user_data.model_dump(exclude_unset=True).items():
+            setattr(user, field, value)
+
+        db.commit()
+
+        return {"msg": "User updated successfully"}
+    
+    except HTTPException as http_exception:
+        raise http_exception
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    finally:
+        db.close()
+
+

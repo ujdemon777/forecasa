@@ -40,7 +40,7 @@ class Config:
 
             metadata = {
                 'bronze': await cls.create_metadata(payload.meta_data.bronze.filters),
-                'silver' : {}
+                'silver' : None
             }
 
             payload.meta_data = metadata
