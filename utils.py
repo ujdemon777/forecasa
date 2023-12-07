@@ -1,9 +1,9 @@
-from fastapi.responses import JSONResponse
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status, File, UploadFile
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import os,json,io
 import pandas as pd
+from cryptography.fernet import Fernet
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -43,6 +43,21 @@ def authenticate_user(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
+
+
+
+async def encrypt_password(password):
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+
+    encrypted_password = cipher_suite.encrypt(password.encode('utf-8'))
+    return encrypted_password,key
+
+
+async def decrypt_password(key,encrypted_password):
+    cipher_suite = Fernet(key)
+    decrypted_password = cipher_suite.decrypt(encrypted_password).decode('utf-8')
+    return decrypted_password
 
 
 async def upload_file(file: UploadFile = File(...)):

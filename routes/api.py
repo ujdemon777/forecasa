@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from endpoints import  blobs, auth, leads, transaction, filters, mail, user, contact, config
+from endpoints import  blobs, auth, leads, transaction, filters, mail, user, contact, config, business_credential
 
 router = APIRouter()
 router.include_router(transaction.router)
@@ -11,3 +11,4 @@ router.include_router(mail.router)
 router.include_router(user.router)
 router.include_router(contact.router)
 router.include_router(config.router)
+router.include_router(business_credential.router)
