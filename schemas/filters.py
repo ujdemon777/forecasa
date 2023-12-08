@@ -3,7 +3,7 @@ from typing import Optional
 
 
 class CompanyFilters(BaseModel):
-    cmp_name: Optional[str] = None
+    name: Optional[str] = None
     transaction_type: Optional[list] = None
     transaction_tags: Optional[list] = None
     counties: Optional[list] = None

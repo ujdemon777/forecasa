@@ -174,7 +174,6 @@ async def add_leads(experiment_id:int = Body(...), file: UploadFile = File(...),
     """
     
     try:
-        # experiment_id = 1
 
         response = await upload_file(file)
         companies = []

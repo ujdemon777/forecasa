@@ -68,20 +68,23 @@ async def fetch_company_data(filters: CompanyFilters):
 
             filtered_data = [company for company in companies if company['average_mortgage_amount'] > min_value and company['average_mortgage_amount'] < max_value ]
 
-        if filters.mortgage_transactions:
-            max_value = filters.mortgage_transactions.get("max_value",float('inf'))
-            min_value = filters.mortgage_transactions.get("min_value",0)
+        if filters.name:
+            filtered_data = [company for company in companies if name.lower() in company['name'].lower()]
 
-            filtered_data = [company for company in filtered_data if company['mortgage_transactions'] > min_value and company['mortgage_transactions'] < max_value ]
+        # if filters.mortgage_transactions:
+        #     max_value = filters.mortgage_transactions.get("max_value",float('inf'))
+        #     min_value = filters.mortgage_transactions.get("min_value",0)
 
-        if filters.last_transaction_date:
-            start_date = filters.last_transaction_date.get("start_date")
-            end_date = filters.last_transaction_date.get("end_date")
+        #     filtered_data = [company for company in filtered_data if company['mortgage_transactions'] > min_value and company['mortgage_transactions'] < max_value ]
 
-            if end_date is None:
-                end_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        # if filters.last_transaction_date:
+        #     start_date = filters.last_transaction_date.get("start_date")
+        #     end_date = filters.last_transaction_date.get("end_date")
 
-            filtered_data = [company for company in filtered_data if (start_date is None or company['last_transaction_date'] >= start_date) and company['last_transaction_date'] <= end_date]
+        #     if end_date is None:
+        #         end_date = datetime.datetime.now().strftime('%Y-%m-%d')
+
+        #     filtered_data = [company for company in filtered_data if (start_date is None or company['last_transaction_date'] >= start_date) and company['last_transaction_date'] <= end_date]
 
         return {"companies": filtered_data, "companies_total_count": len(filtered_data)}
 
