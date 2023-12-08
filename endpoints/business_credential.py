@@ -117,21 +117,18 @@ async def update_business(
     db: Session = Depends(get_db)
 ):
     try:
-        business = db.query(Business).filter(Business.business_id == business_id).all()
+        print(business_data.source)
+        business_keys = db.query(Business).filter(Business.business_id == business_id , Business.source == business_data.source ).first()
 
-        if not business:
+        if not business_keys:
             raise HTTPException(status_code=404, detail=f'No business with this id: {business_id} found')
         
+        encrypt_api_key , fernet_key = await encrypt_password(business_data.api_key)
 
-
-        if business_data.api_key:
-            encrypt_api_key , fernet_key = await encrypt_password(business_data.api_key)
-            business.api_key = encrypt_api_key
-            business.fernet_key = fernet_key
-
-        if business_data.source:
-            business.source = business_data.source
+        business_keys.api_last_four = business_data.api_key[-4:]
         
+        business_keys.api_key = encrypt_api_key
+        business_keys.fernet_key = fernet_key        
 
         db.commit()
 
