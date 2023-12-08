@@ -19,7 +19,7 @@ class BlobSchema(BaseModel):
     source: str = None
     user_id : int = None
     status : str = None
-    project_label : Optional[int] = None
+    project_label : Optional[str] = None
 
 
 
