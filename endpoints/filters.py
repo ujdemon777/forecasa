@@ -4,6 +4,7 @@ from schemas.filters import CompanyFilters
 from Oauth import get_current_user
 import json
 from data import load_json
+import datetime
 
 
 router = APIRouter(
@@ -18,33 +19,33 @@ forecasa_api_key= os.getenv("FORECASA_API_KEY")
 
 @router.post("/filter")
 async def fetch_company_data(filters: CompanyFilters):
-    params = {
-        "api_key": forecasa_api_key
-    }
+    # params = {
+    #     "api_key": forecasa_api_key
+    # }
 
-    if filters.page:
-        params[f"page"] = filters.page
+    # if filters.page:
+    #     params[f"page"] = filters.page
 
-    if filters.page_size:
-        params[f"page_size"] = filters.page_size
+    # if filters.page_size:
+    #     params[f"page_size"] = filters.page_size
 
-    if filters.transaction_tags:
-        params[f"q[tags_name_in][]"] = filters.transaction_tags
+    # if filters.transaction_tags:
+    #     params[f"q[tags_name_in][]"] = filters.transaction_tags
 
-    if filters.name:
-        params["q[name_cont]"] = filters.name
+    # if filters.name:
+    #     params["q[name_cont]"] = filters.name
 
-    if filters.counties:
-        params["[transactions][q][county_in][]"] = filters.counties
+    # if filters.counties:
+    #     params["[transactions][q][county_in][]"] = filters.counties
 
-    if filters.transaction_type:
-        params[f"[transactions][q][transaction_type_in][]"] = filters.transaction_type
+    # if filters.transaction_type:
+    #     params[f"[transactions][q][transaction_type_in][]"] = filters.transaction_type
 
-    if filters.amount:
-        if filters.amount.get("max_value"):
-            params[f"transactions[q][amount_lteq]"] = filters.amount.get("max_value")
-        if filters.amount.get("min_value"):
-            params[f"transactions[q][amount_gteq]"] = filters.amount.get("min_value")
+    # if filters.amount:
+    #     if filters.amount.get("max_value"):
+    #         params[f"transactions[q][amount_lteq]"] = filters.amount.get("max_value")
+    #     if filters.amount.get("min_value"):
+    #         params[f"transactions[q][amount_gteq]"] = filters.amount.get("min_value")
         
     try:
         # async with httpx.AsyncClient() as client:
@@ -52,9 +53,38 @@ async def fetch_company_data(filters: CompanyFilters):
         #     url = "https://webapp.forecasa.com/api/v1/companies"  
         #     response = await client.get(url, params=params, timeout=10)
 
-        #     if response.status_code == 200:  
-        companies = load_json.company_data
-        return {"companies": companies.get("companies", []), "companies_total_count": companies.get("companies_total_count", 0)}
+        #     if response.status_code == 200:
+        #         companies = response.json() 
+        #         return {"companies": companies.get("companies", []), "companies_total_count": companies.get("companies_total_count", 0)}
+        
+        data = load_json.company_data
+        companies=data.get("companies", [])
+
+        filtered_data = companies
+
+        if filters.amount:
+            max_value = filters.amount.get("max_value",float('inf'))
+            min_value = filters.amount.get("min_value",0)
+
+            filtered_data = [company for company in companies if company['average_mortgage_amount'] > min_value and company['average_mortgage_amount'] < max_value ]
+
+        if filters.mortgage_transactions:
+            max_value = filters.mortgage_transactions.get("max_value",float('inf'))
+            min_value = filters.mortgage_transactions.get("min_value",0)
+
+            filtered_data = [company for company in filtered_data if company['mortgage_transactions'] > min_value and company['mortgage_transactions'] < max_value ]
+
+        if filters.last_transaction_date:
+            start_date = filters.last_transaction_date.get("start_date")
+            end_date = filters.last_transaction_date.get("end_date")
+
+            if end_date is None:
+                end_date = datetime.datetime.now().strftime('%Y-%m-%d')
+
+            filtered_data = [company for company in filtered_data if (start_date is None or company['last_transaction_date'] >= start_date) and company['last_transaction_date'] <= end_date]
+
+        return {"companies": filtered_data, "companies_total_count": len(filtered_data)}
+
             
     except httpx.ReadTimeout as e:
         raise HTTPException(status_code=408, detail=f"HTTP Request Timed Out:{str(e)}")

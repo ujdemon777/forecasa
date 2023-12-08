@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body,File, UploadFile
 from managers.config import Config
-from models.blobs import Blob
+from models.user import Blob
 from models.company import Company
 from models.user import User
 from config.db import get_db
@@ -142,7 +142,7 @@ async def filter_leads(current_user: str = Depends(get_current_user),
 
 
 @router.post("/add")
-async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
+async def add_leads(experiment_id:int = Body(...), file: UploadFile = File(...), current_user: str = Depends(get_current_user),db: Session = Depends(get_db)):
 
     """
     Adding leads Company Data to the Database
@@ -172,8 +172,10 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
     - In case of an integrity error, returns an error response with a 400 status code.
 
     """
-
+    
     try:
+        # experiment_id = 1
+
         response = await upload_file(file)
         companies = []
         if response.get("status_code") == 200:
@@ -230,13 +232,16 @@ async def add_leads(file: UploadFile = File(...),current_user: str = Depends(get
          
             # db.refresh(company, attribute_names=['id'])
             # data = {"data": company.id}
-        existing_file= True
-        file = "lc_2023-12-03 19:02:56.814034.json"
-        if existing_file:
+        exp_id = db.query(Blob.id).filter(Blob.id == experiment_id).first()
+        
+        if exp_id:
             meta_data = Metadata(created_at="", updated_at="", filters={"source":"power-bi"}) 
             source_schema = SourceSchema(bronze=meta_data,silver=meta_data)
-            payload = BlobSchema(file_name=file,meta_data=source_schema)
+            payload = BlobSchema(project_label=exp_id[0] , meta_data=source_schema)
             config_blob = await Config.update_config(payload,db)
+        
+        else:
+            raise HTTPException(status_code=404, detail=f'No experiment with this id {experiment_id} found')
 
         db.commit()
         db.close()

@@ -10,7 +10,7 @@ from managers.blobs import Blobs
 from managers.filters import Filters
 from Oauth import get_current_user
 from managers.config import Config
-from models.blobs import Blob
+from models.user import Blob
 from models.user import User
 from schemas.blobs import BlobSchema, Metadata, SourceSchema
 
@@ -82,7 +82,7 @@ async def create_blob(request:Request,current_user: User = Depends(get_current_u
         existing_file= db.query(Blob).filter(Blob.file_name == blob_name).first()
 
         if not existing_file:
-            config_blob = await Config.create_config(current_user.name,payload,db)
+            config_blob = await Config.create_config(current_user.id,payload,db)
     
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")

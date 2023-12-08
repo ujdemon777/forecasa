@@ -17,9 +17,9 @@ class BlobSchema(BaseModel):
     updated_at: str = None
     meta_data: SourceSchema = None
     source: str = None
-    user_name : int = None
+    user_id : int = None
     status : str = None
-    project_label : str = None
+    project_label : Optional[int] = None
 
 
 

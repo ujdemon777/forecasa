@@ -1,5 +1,5 @@
 from fastapi import HTTPException,Depends
-from models.blobs import Blob
+from models.user import Blob
 from config.db import get_db
 from schemas.blobs import BlobSchema
 from datetime import datetime
@@ -24,7 +24,7 @@ class Config:
     
     
     @classmethod
-    async def create_config(cls,user_name, payload:BlobSchema, db: Session = Depends(get_db)):
+    async def create_config(cls,user_id, payload:BlobSchema, db: Session = Depends(get_db)):
        
         try:
             existing_file= db.query(Blob).filter(Blob.file_name == payload.file_name).first()
@@ -35,7 +35,7 @@ class Config:
             payload.created_at = str(datetime.utcnow())
             payload.updated_at = str(datetime.utcnow())
             payload.source = "forecasa"
-            payload.user_name = user_name
+            payload.user_id = user_id
             payload.status = "bronze"
 
             metadata = {
@@ -67,9 +67,9 @@ class Config:
     @classmethod
     async def update_config(cls,payload: BlobSchema,db: Session = Depends(get_db)):
         try:
-            existing_file= db.query(Blob).filter(Blob.file_name == payload.file_name).first()
+            existing_file= db.query(Blob).filter(Blob.id == payload.project_label).first()
             if not existing_file:
-                raise HTTPException(status_code=404, detail=f'No file with this name: {payload.file_name} found')
+                raise HTTPException(status_code=404, detail=f'No file with this id: {payload.project_label} found')
 
             existing_file.meta_data = existing_file.meta_data or {}
             

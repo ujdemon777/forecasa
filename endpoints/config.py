@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from Oauth import get_current_user
-from models.blobs import Blob
+from models.user import Blob
 from config.db import get_db
 from sqlalchemy.orm import defer,Session
 from sqlalchemy import desc , and_
+
+from models.user import User
 
 
 
@@ -18,12 +20,12 @@ router = APIRouter(
 
 @router.post('/all')              
 async def get_all_users(
-    current_user: str = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
-    file_name: str = Body(None, description="name of file"),
+    experiment: int = Body(None, description="name of file"),
     status: str = Body(None, description="Bronze/Silver/Gold"),
     createdAt: dict = Body(None, description="Start date & End date of the range (YYYY-MM-DD)"),
-    user_id: int = Body(None, description="id"),
+    user: int = Body(None, description="user_id"),
     page: int = Query(1,ge=1),
     page_size: int = Query(100,ge=1)):
   
@@ -42,11 +44,19 @@ async def get_all_users(
         if status and isinstance(status, str):
             filters.append(Blob.status == status)
 
-        if file_name and isinstance(file_name, str):
-            filters.append(Blob.file_name == file_name)
+        if experiment and isinstance(experiment, int):
+            filters.append(Blob.id == experiment)
 
-        # if user_id and isinstance(user_id, int):
-        #     filters.append(Blob.user_name == user_id)
+        if user and isinstance(user, int):
+            filters.append(Blob.user_id == user)
+            # user_id = db.query(User.id).filter(User.name == user_name).first()
+            # print(user_id)
+            # if user_id is not None:
+            #     user_id = user_id[0]
+            #     filters.append(Blob.user_id == user_id)
+            # else:
+            #     filters.append(Blob.user_id == user_id)
+
 
         if filters:
             configs = db.query(Blob).filter(and_(*filters)).order_by(
