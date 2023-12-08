@@ -10,6 +10,7 @@ class BusinessBaseSchema(BaseModel):
     fernet_key: Optional[bytes] = None
     created_at: datetime = None
     updated_at: datetime = None
+    api_last_four : Optional[str] = None
 
     class Config:
         from_attributes = True

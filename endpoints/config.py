@@ -19,7 +19,7 @@ router = APIRouter(
 
 
 @router.post('/all')              
-async def get_all_users(
+async def get_all_configs(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     experiment: int = Body(None, description="name of file"),
@@ -64,10 +64,18 @@ async def get_all_users(
             return {"msg": "configs retrieved successfully","configs":configs}
         
         else:
-            configs = db.query(Blob).order_by(
+            configs = db.query(Blob,User.name).join(User,Blob.user_id==User.id).order_by(
                 desc(Blob.id)).limit(page_size).offset((page-1)*page_size).all()
-        
-            return {"msg": "All configs retrieved successfully","configs":configs}
+
+            result_configs = []
+            
+            for blob, user_name in configs:
+                # a=(blob.__dict__['user_name']= user_name)
+                blob.user_name = user_name
+                result_configs.append(blob)
+
+            # result_configs = [blob._asdict() | {'user_name': user_name} for blob, user_name in configs]
+            return {"msg": "All configs retrieved successfully","configs":result_configs}
 
     
     except HTTPException as http_exception:

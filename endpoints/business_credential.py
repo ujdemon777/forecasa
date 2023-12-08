@@ -31,10 +31,15 @@ async def create_credential(business: BusinessBaseSchema, db: Session = Depends(
         business.created_at = datetime.utcnow()
         business.updated_at = datetime.utcnow()
 
+        business.api_last_four = business.api_key[-4:]
+        print(business.api_last_four)
+
         encrypt_api_key , fernet_key = await encrypt_password(business.api_key)
-        print(f"encrypt_api_key:{encrypt_api_key},fernet_key:{fernet_key}")
+
         business.api_key = encrypt_api_key
         business.fernet_key = fernet_key
+
+        
 
         new_business = Business(**business.model_dump())
 

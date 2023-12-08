@@ -69,7 +69,21 @@ async def fetch_company_data(filters: CompanyFilters):
             filtered_data = [company for company in companies if company['average_mortgage_amount'] >= min_value and company['average_mortgage_amount'] <= max_value ]
 
         if filters.name:
-            filtered_data = [company for company in companies if filters.name.lower() in company['name'].lower()]
+            filtered_data = [company for company in filtered_data if filters.name.lower() in company['name'].lower()]
+
+        if filters.transaction_tags:
+            
+            filter_data = []
+            for company in filtered_data:
+                for tag_filter in filters.transaction_tags:
+                    if any(tag_filter in tag for tag in company['tag_names']):
+                        filter_data.append(company)
+                        break
+            filtered_data = filter_data
+          
+            # [company for company in filtered_data if any(filters.transaction_tags in tag for tag_filter in filters.transaction_tags for tag in company['tag_names'])]
+            # filtered_data = [company for company in companies if any(filters.transaction_tags in tag for tag in company['tag_names'])]
+            # filtered_data = [company for company in filtered_data if filters.transaction_tags[0] in [tag for tag in company['tag_names']]]
 
         # if filters.mortgage_transactions:
         #     max_value = filters.mortgage_transactions.get("max_value",float('inf'))

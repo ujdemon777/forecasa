@@ -14,3 +14,4 @@ class Business(Base):
     fernet_key = Column(LargeBinary(100), nullable=False)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    api_last_four = Column(String, nullable=False)
