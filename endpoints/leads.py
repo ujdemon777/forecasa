@@ -236,7 +236,7 @@ async def add_leads(experiment_id:int = Body(...), file: UploadFile = File(...),
         if exp_id:
             meta_data = Metadata(created_at="", updated_at="", filters={"source":"power-bi"}) 
             source_schema = SourceSchema(bronze=meta_data,silver=meta_data)
-            payload = BlobSchema(project_label=exp_id[0] , meta_data=source_schema)
+            payload = BlobSchema(id=exp_id[0] , meta_data=source_schema)
             config_blob = await Config.update_config(payload,db)
         
         else:

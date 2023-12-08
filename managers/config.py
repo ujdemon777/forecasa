@@ -67,9 +67,9 @@ class Config:
     @classmethod
     async def update_config(cls,payload: BlobSchema,db: Session = Depends(get_db)):
         try:
-            existing_file= db.query(Blob).filter(Blob.id == payload.project_label).first()
+            existing_file= db.query(Blob).filter(Blob.id == payload.id).first()
             if not existing_file:
-                raise HTTPException(status_code=404, detail=f'No file with this id: {payload.project_label} found')
+                raise HTTPException(status_code=404, detail=f'No file with this id: {payload.id} found')
 
             existing_file.meta_data = existing_file.meta_data or {}
             
