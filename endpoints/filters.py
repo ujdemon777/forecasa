@@ -57,26 +57,33 @@ async def fetch_company_data(filters: CompanyFilters):
         #         companies = response.json() 
         #         return {"companies": companies.get("companies", []), "companies_total_count": companies.get("companies_total_count", 0)}
         
-        data = load_json.company_data
+        
+        data = load_json.lead_data
         companies=data.get("companies", [])
 
         filtered_data = companies
+
+        page = filters.page
+        page_size = filters.page_size
+
+        if filters.state:
+             filtered_data = [company for company in companies if company.get('state') is not None and filters.state.lower() in company['state'].lower()]
 
         if filters.amount:
             max_value = filters.amount.get("max_value",float('inf'))
             min_value = filters.amount.get("min_value",0)
     
-            filtered_data = [company for company in companies if company['average_mortgage_amount'] >= min_value and company['average_mortgage_amount'] <= max_value ]
+            filtered_data = [company for company in filtered_data if company.get('average_mortgage_amount') is not None and min_value <= company['average_mortgage_amount'] <= max_value]
 
         if filters.name:
-            filtered_data = [company for company in filtered_data if filters.name.lower() in company['name'].lower()]
+            filtered_data = [company for company in filtered_data if company.get('name') is not None and filters.name.lower() in company['name'].lower()]
 
         if filters.transaction_tags:
             
             filter_data = []
             for company in filtered_data:
                 for tag_filter in filters.transaction_tags:
-                    if any(tag_filter in tag for tag in company['tag_names']):
+                    if company.get('tag_names') is not None and  any(tag_filter in tag for tag in company['tag_names']):
                         filter_data.append(company)
                         break
             filtered_data = filter_data
@@ -99,8 +106,11 @@ async def fetch_company_data(filters: CompanyFilters):
         #         end_date = datetime.datetime.now().strftime('%Y-%m-%d')
 
         #     filtered_data = [company for company in filtered_data if (start_date is None or company['last_transaction_date'] >= start_date) and company['last_transaction_date'] <= end_date]
+        start_index = (page-1) * page_size
+        end_index = start_index + page_size
 
-        return {"companies": filtered_data, "companies_total_count": len(filtered_data)}
+        filtered_cmp = filtered_data[start_index:end_index]
+        return {"companies": filtered_cmp, "companies_total_count": len(filtered_data)}
 
             
     except httpx.ReadTimeout as e:

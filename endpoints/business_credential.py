@@ -117,7 +117,6 @@ async def update_business(
     db: Session = Depends(get_db)
 ):
     try:
-        print(business_data.source)
         business_keys = db.query(Business).filter(Business.business_id == business_id , Business.source == business_data.source ).first()
 
         if not business_keys:
@@ -145,3 +144,32 @@ async def update_business(
         db.close()
 
 
+@router.delete('/{business_id}')
+async def delete_business_by_id(business_id:int ,
+        business_data: UpdateBusinessBaseSchema,
+        current_user: str = Depends(get_current_user),
+        db: Session = Depends(get_db)):
+    
+    try:
+        business = db.query(Business).filter(Business.business_id == business_id, Business.source == business_data.source ).first()
+        if not business:
+            raise HTTPException(status_code=404, detail=f'No business with this id: {business_id} found')
+        
+        if business:
+            db.delete(business)
+            print(business.id)
+            db.query(Business).filter(Business.id > business.id).update({Business.id: Business.id - 1})
+            db.commit()
+            db.close()
+            return {"msg": f"Business id : {business_id} deleted successfully"}
+        else:
+            raise HTTPException(status_code=404, detail="contact not found")
+        
+    except HTTPException as http_exception:
+        raise http_exception
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    finally:
+        db.close()

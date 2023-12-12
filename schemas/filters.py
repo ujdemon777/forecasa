@@ -12,3 +12,4 @@ class CompanyFilters(BaseModel):
     page_size: Optional[int] = 500000
     mortgage_transactions: Optional[dict]= None
     last_transaction_date: Optional[dict]= None
+    state : Optional[str] = None
