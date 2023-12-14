@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Body,File, UploadFile
 from managers.config import Config
+from models.leads import Leads
 from models.user import Blob
 from models.company import Company
 from models.user import User
@@ -13,6 +14,7 @@ from Oauth import get_current_user
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+import hashlib
 
 
 
@@ -189,12 +191,25 @@ async def add_leads(experiment_id:int = Body(...), file: UploadFile = File(...),
 
 
         company_ids = []
+        company_names = []
 
         for company in companies:
             company_ids.append(company.get('id'))
+            company_names.append(company.get('name'))
 
         existing_company_ids = [company_id[0] for company_id in db.query(Company.id).filter(Company.id.in_(set(company_ids))).all()]
         unique_company_ids = list(set(company_ids) - set(existing_company_ids))
+
+        existing_company_names = [company_name[0] for company_name in db.query(Company.name).filter(Company.name.in_(set(company_names))).all()]
+        unique_company_names = list(set(company_names) - set(existing_company_names))
+
+        company_key = [hashlib.sha256(f'{company_id}-{company_name}'.encode()).hexdigest() for company_id, company_name in zip(unique_company_ids, unique_company_names)]
+        print(company_key)
+        # leads = db.query(Company).all()
+        # company_key = [hashlib.sha256(f'{lead.id}-{lead.name}'.encode()).hexdigest() for lead in leads]
+
+        db.bulk_insert_mappings(Leads, [{'company_key': key, 'status': 'silver'} for key in company_key])
+        db.commit()
 
 
         for cmp in filter(lambda x: x['id'] in unique_company_ids, companies):

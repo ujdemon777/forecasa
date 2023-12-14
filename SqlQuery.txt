@@ -103,3 +103,10 @@ CREATE TABLE IF NOT EXISTS business_credential (
 
 ALTER TABLE business_credential
 ADD COLUMN api_last_four VARCHAR(64);
+
+
+
+CREATE TABLE IF NOT EXISTS leads(
+    company_key VARCHAR(256) PRIMARY KEY,
+    status VARCHAR(64) NOT NULL
+) ENGINE = INNODB;

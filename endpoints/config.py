@@ -59,9 +59,15 @@ async def get_all_configs(
 
 
         if filters:
-            configs = db.query(Blob).filter(and_(*filters)).order_by(
+            configs = db.query(Blob,User.name).join(User,Blob.user_id==User.id).filter(and_(*filters)).order_by(
                     desc(Blob.id)).limit(page_size).offset((page-1)*page_size).all()
-            return {"msg": "configs retrieved successfully","configs":configs}
+            
+            result_configs = []
+            
+            for blob, user_name in configs:
+                blob.user_name = user_name
+                result_configs.append(blob)
+            return {"msg": "configs retrieved successfully","configs":result_configs}
         
         else:
             configs = db.query(Blob,User.name).join(User,Blob.user_id==User.id).order_by(

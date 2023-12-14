@@ -1,3 +1,4 @@
+import hashlib
 from fastapi import APIRouter, Depends, HTTPException,Request, Query
 import json,os
 from dotenv import load_dotenv, find_dotenv
@@ -10,6 +11,8 @@ from managers.blobs import Blobs
 from managers.filters import Filters
 from Oauth import get_current_user
 from managers.config import Config
+from models.company import Company
+from models.leads import Leads
 from models.user import Blob
 from models.user import User
 from schemas.blobs import BlobSchema, Metadata, SourceSchema
@@ -67,7 +70,28 @@ async def create_blob(request:Request,current_user: User = Depends(get_current_u
     if not companies:
         raise HTTPException(status_code=400,
                         detail='No Companies Provided in Request')
+    
+    company_ids = []
+    company_names = []
 
+    for company in companies:
+        company_ids.append(company.get('id'))
+        company_names.append(company.get('name'))
+
+    existing_company_ids = [company_id[0] for company_id in db.query(Leads.company_id).filter(Leads.company_id.in_(set(company_ids))).all()]
+    unique_company_ids = list(set(company_ids) - set(existing_company_ids))
+
+    existing_company_names = [company_name[0] for company_name in db.query(Leads.company_name).filter(Leads.company_name.in_(set(company_names))).all()]
+    unique_company_names = list(set(company_names) - set(existing_company_names))
+
+    company_key = [hashlib.sha256(f'{company_id}-{company_name}'.encode()).hexdigest() for company_id, company_name in zip(unique_company_ids, unique_company_names)]
+    print(company_key)
+    
+    db.bulk_insert_mappings(Leads, [{'company_key': key, 'status': 'bronze'} for key in company_key])
+    db.commit()
+    
+    # try:
+    #     db.bulk_insert_mappings(Leads, [{'company_key': company_id, 'status': 'bronze'} for company_id in company_ids])
     # try:
     #     config_blob = await Blobs.add_config_blob(container_client,filters)
     
