@@ -9,52 +9,57 @@ from data import load_json
 _ = load_dotenv(find_dotenv())
 forecasa_api_key= os.getenv("FORECASA_API_KEY")
 
-class Filters:
+class Filter:
         
     def __init__(self) -> None:
         pass
-
-    async def fetch_filtered_company_data(filters: CompanyFilters):
-
-        filters = CompanyFilters.model_validate(filters)
-        params = {
-            "api_key": forecasa_api_key
-        }
-
-        if filters.page:
-            params[f"page"] = filters.page
-
-        if filters.page_size:
-            params[f"page_size"] = filters.page_size
-
-        if filters.transaction_tags:
-            params[f"q[tags_name_in][]"] = filters.transaction_tags
-
-        if filters.name:
-            params["q[name_cont]"] = filters.name
-
-        if filters.counties:
-            params["[transactions][q][county_in][]"] = filters.counties
-
-        if filters.transaction_type:
-            params[f"[transactions][q][transaction_type_in][]"] = filters.transaction_type
-
-        if filters.amount:
-            if filters.amount.get("max_value"):
-                params[f"transactions[q][amount_lteq]"] = filters.amount.get("max_value")
-            if filters.amount.get("min_value"):
-                params[f"transactions[q][amount_gteq]"] = filters.amount.get("min_value")
+    
+    @classmethod
+    async def fetch_filtered_company_data(cls, filters:CompanyFilters):
 
         try:
-            # async with httpx.AsyncClient() as client:
 
-            #     url = "https://webapp.forecasa.com/api/v1/companies"  
-            #     response = await client.get(url, params=params)
+            data = load_json.lead_data
+            companies=data.get("companies", [])
 
-            #     if response.status_code == 200:  
-            #         data = response.json()
-            data = load_json.company_data
-            return {"companies": data.get("companies", []), "companies_total_count": data.get("companies_total_count", 0)}
+            filtered_data = companies
+            print(type(filters))
+            page = filters.page
+            page_size = filters.page_size
 
+            if filters.state:
+                filtered_data = [company for company in companies if company.get('state') is not None and filters.state.lower() in company['state'].lower()]
+
+            if filters.amount:
+                max_value = filters.amount.get("max_value",float('inf'))
+                min_value = filters.amount.get("min_value",0)
+        
+                filtered_data = [company for company in filtered_data if company.get('average_mortgage_amount') is not None and min_value <= company['average_mortgage_amount'] <= max_value]
+
+            if filters.name:
+                filtered_data = [company for company in filtered_data if company.get('name') is not None and filters.name.lower() in company['name'].lower()]
+
+            if filters.transaction_tags:
+                
+                filter_data = []
+                for company in filtered_data:
+                    for tag_filter in filters.transaction_tags:
+                        if company.get('tag_names') is not None and  any(tag_filter in tag for tag in company['tag_names']):
+                            filter_data.append(company)
+                            break
+                filtered_data = filter_data
+            
+                
+            start_index = (page-1) * page_size
+            end_index = start_index + page_size
+
+            filtered_cmp = filtered_data[start_index:end_index]
+            return {"companies": filtered_cmp, "companies_total_count": len(filtered_data)}
+
+            
+        except httpx.ReadTimeout as e:
+            raise HTTPException(status_code=408, detail=f"HTTP Request Timed Out:{str(e)}")
+        
         except Exception as e:
-            raise HTTPException(status_code=400, detail=str(e))
+            raise HTTPException(status_code=400,
+                                detail=str(e))

@@ -8,7 +8,7 @@ from datetime import datetime
 from requests import Session
 from config.db import get_db
 from managers.blobs import Blobs
-from managers.filters import Filters
+from managers.filters import Filter
 from Oauth import get_current_user
 from managers.config import Config
 from models.company import Company
@@ -47,7 +47,7 @@ async def create_blob(request:Request,current_user: User = Depends(get_current_u
     filters = data.get('filters') or {}
     project_label = data.get('project_label')
 
-    company = await Filters.fetch_filtered_company_data(filters)
+    company = await Filter.fetch_filtered_company_data(filters)
     company["source"] = "forecasa"
     company["created_at"] = str(datetime.utcnow())
     company["filters"] = filters
@@ -87,11 +87,9 @@ async def create_blob(request:Request,current_user: User = Depends(get_current_u
     company_key = [hashlib.sha256(f'{company_id}-{company_name}'.encode()).hexdigest() for company_id, company_name in zip(unique_company_ids, unique_company_names)]
     print(company_key)
     
-    db.bulk_insert_mappings(Leads, [{'company_key': key, 'status': 'bronze'} for key in company_key])
+    db.bulk_insert_mappings(Leads, [{'company_key': key, 'company_id':company_id, 'company_name':company_name, 'status': 'bronze'} for key,company_id,company_name in zip(company_key,unique_company_ids,unique_company_names)])
     db.commit()
     
-    # try:
-    #     db.bulk_insert_mappings(Leads, [{'company_key': company_id, 'status': 'bronze'} for company_id in company_ids])
     # try:
     #     config_blob = await Blobs.add_config_blob(container_client,filters)
     
@@ -110,7 +108,7 @@ async def create_blob(request:Request,current_user: User = Depends(get_current_u
     
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")
-
+    # print(company)
     blob_client.upload_blob(json.dumps(company), blob_type="BlockBlob",overwrite=True)
 
     return {"msg": "company_ids added successfully","config_blog":config_blob}
