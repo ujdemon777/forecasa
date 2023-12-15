@@ -15,15 +15,15 @@ class Filter:
         pass
     
     @classmethod
-    async def fetch_filtered_company_data(cls, filters:CompanyFilters):
+    async def fetch_filtered_company_data(cls, filters:dict):
 
         try:
-
+            filters = CompanyFilters(**filters)
             data = load_json.lead_data
             companies=data.get("companies", [])
 
             filtered_data = companies
-            print(type(filters))
+
             page = filters.page
             page_size = filters.page_size
 

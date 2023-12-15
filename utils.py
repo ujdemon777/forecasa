@@ -75,9 +75,18 @@ async def upload_file(file: UploadFile = File(...)):
     elif file_extension.lower() in ["csv", "xlsx"]:
         contents = await file.read()
         try:
-            df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
-            # df.fillna(None, inplace=True)
-            return {"msg": "CSV file received", "data": df.to_dict(orient='records'),"status_code":200,"type":"csv"}
+            if file_extension.lower() == "csv":
+                df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
+                df = df.where(pd.notna(df), None)
+                return {"msg": "CSV file received", "data": df.to_dict(orient='records'),"status_code":200,"type":"csv"}
+            
+            elif file_extension.lower() == "xlsx":
+                df = pd.read_excel(io.BytesIO(contents))
+                df = df.where(pd.notna(df), None)
+                json_data = df.to_json(orient='records', date_format='iso', default_handler=str)
+                return {"msg": "xlxs file received", "data": json.loads(json_data),"status_code":200,"type":"xlsx"}
+            
+            
         except pd.errors.ParserError:
             pass 
 
