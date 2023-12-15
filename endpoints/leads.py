@@ -202,14 +202,31 @@ async def add_leads(experiment_id:int = Body(...), file: UploadFile = File(...),
             company_ids.append(company.get('id'))
             company_names.append(company.get('name'))
 
-        existing_company_ids = [company_id[0] for company_id in db.query(Leads.company_id).filter(Leads.company_id.in_(set(company_ids))).all()]
-        unique_company_ids = list(set(company_ids) - set(existing_company_ids))
+        existing_data = db.query(Leads.company_id, Leads.company_name).filter(
+        or_(
+            Leads.company_id.in_(set(company_ids)),
+            Leads.company_name.in_(set(company_names))
+        )
+        ).all()
 
-        existing_company_names = [company_name[0] for company_name in db.query(Leads.company_name).filter(Leads.company_name.in_(set(company_names))).all()]
-        unique_company_names = list(set(company_names) - set(existing_company_names))
+        existing_company_ids = [company_id[0] for company_id in existing_data]
+        existing_company_names = [company_name[1] for company_name in existing_data]
+
+        unique_company_ids = []
+        unique_company_names = []
+        
+        for company_id, company_name in zip(company_ids, company_names):
+            if company_id not in existing_company_ids and company_name not in existing_company_names:
+                unique_company_ids.append(company_id)
+                unique_company_names.append(company_name)
+
+        # existing_company_ids = [company_id[0] for company_id in db.query(Leads.company_id).filter(Leads.company_id.in_(set(company_ids))).all()]
+        # unique_company_ids = list(set(company_ids) - set(existing_company_ids))
+
+        # existing_company_names = [company_name[0] for company_name in db.query(Leads.company_name).filter(Leads.company_name.in_(set(company_names))).all()]
+        # unique_company_names = list(set(company_names) - set(existing_company_names))
 
         company_key = [hashlib.sha256(f'{company_id}-{company_name}'.encode()).hexdigest() for company_id, company_name in zip(unique_company_ids, unique_company_names)]
-        print(company_key)
         
         db.bulk_update_mappings(Leads, [{'company_key': key, 'company_id':company_id, 'company_name':company_name, 'status': 'silver'} for key,company_id,company_name in zip(company_key,unique_company_ids,unique_company_names)])
         db.commit()
