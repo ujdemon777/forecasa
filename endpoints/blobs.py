@@ -58,7 +58,7 @@ async def fetch_company(file: UploadFile = File(...)):
     
 
 @router.post("/blob")
-async def create_blob(request:Request,project_label:str = Body(...),file: UploadFile = File(None),current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
+async def create_blob(request:Request,project_label:str = Body(None),file: UploadFile = File(None),current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
     
     if file:
         company = await fetch_company(file)
