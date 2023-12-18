@@ -5,7 +5,7 @@ from typing import Optional
 class Metadata(BaseModel):
     created_at: str = None
     updated_at: str = None
-    filters: dict = None
+    filters: Optional[dict]  = None
 
 class SourceSchema(BaseModel):
     bronze: Metadata = None

@@ -61,7 +61,7 @@ async def fetch_company(file: UploadFile = File(...)):
 async def create_blob(request:Request,project_label:str = Body(None),file: UploadFile = File(None),current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
     
     data = await request.json()
-    filters = data.get('filters') or {}
+    filters = data.get('filters') or None
     project_label = data.get('project_label')
     company_data = data.get('companies')
 
@@ -76,7 +76,7 @@ async def create_blob(request:Request,project_label:str = Body(None),file: Uploa
         for c in company.get('companies',[]):
             match_company = {
                 "id": int(uuid.uuid4().int % (10**8)),
-                "name": c["Name"] if "Name" in c else None,
+                "name": c["Company Name"] if "Company Name" in c else None,
                 "dba": None,
                 "last_transaction_date": None,
                 "last_mortgage_date": None,

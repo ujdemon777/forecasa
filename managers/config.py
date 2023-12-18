@@ -13,8 +13,9 @@ class Config:
 
     async def create_metadata(filters):
 
-        filters.pop("page", None)
-        filters.pop("page_size", None)
+        if filters is not None:
+            filters.pop("page", None)
+            filters.pop("page_size", None)
         
         return {
             "created_at": str(datetime.utcnow()),
