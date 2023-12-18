@@ -17,7 +17,7 @@ from models.user import Blob
 from models.user import User
 from schemas.blobs import BlobSchema, Metadata, SourceSchema
 from utils import upload_file
-
+import uuid
 
 _ = load_dotenv(find_dotenv())
 
@@ -60,22 +60,46 @@ async def fetch_company(file: UploadFile = File(...)):
 @router.post("/blob")
 async def create_blob(request:Request,project_label:str = Body(None),file: UploadFile = File(None),current_user: User = Depends(get_current_user),db: Session = Depends(get_db)):
     
-    if file:
-        company = await fetch_company(file)
-        filters = {'user_upload_filters': 'user_upload_filters'}
-        project_label = project_label
-        print(project_label)
-        company["filters"] = filters
-    else:
-        data = await request.json()
-        filters = data.get('filters') or {}
-        project_label = data.get('project_label')
+    data = await request.json()
+    filters = data.get('filters') or {}
+    project_label = data.get('project_label')
+    company_data = data.get('companies')
+
+    if not company_data:
         company = await Filter.fetch_filtered_company_data(filters)
+        company["source"] = "forecasa"
+        
+    else:
+        company = {"companies": company_data, "companies_total_count": len(company_data)}
+        matched_company = []
 
-        company["filters"] = filters 
+        for c in company.get(companies,[]):
+            match_company = {
+                "id": int(uuid.uuid4().int % (10**8)),
+                "name": c["Name"] if "Name" in c else None,
+                "dba": None,
+                "last_transaction_date": None,
+                "last_mortgage_date": None,
+                "transactions_as_lender": None,
+                "transactions_as_borrower": None,
+                "mortgage_transactions": None,
+                "transactions_as_buyer": None,
+                "transactions_as_seller": None,
+                "last_county": None,
+                "last_lender_used": None,
+                "other_lenders_used": None,
+                "tag_names": c["Company Tags"] if "Company Tags" in c else None,
+                "principal_address": c["Address"] if "Address" in c else None,
+                "average_mortgage_amount": c["Average Mortgage Amount"] if "Average Mortgage Amount" in c else None
+            }
+            matched_company.append(match_company)
+
+        company['companies']=matched_company
+        company["source"] = current_user.name
 
 
-    company["source"] = "forecasa"
+    company["filters"] = filters 
+    # company["source"] = "forecasa"
     company["created_at"] = str(datetime.utcnow())
     
 
@@ -93,7 +117,6 @@ async def create_blob(request:Request,project_label:str = Body(None),file: Uploa
         raise HTTPException(status_code=400, detail=f"Error listing files: {str(e)}")
 
     companies=company.get('companies' , dict())
-
     if not companies:
         raise HTTPException(status_code=400,
                         detail='No Companies Provided in Request')
@@ -136,12 +159,6 @@ async def create_blob(request:Request,project_label:str = Body(None),file: Uploa
     
     db.bulk_insert_mappings(Leads, [{'company_key': key, 'company_id':company_id, 'company_name':company_name, 'status': 'bronze'} for key,company_id,company_name in zip(company_key,unique_company_ids,unique_company_names)])
     db.commit()
-    
-    # try:
-    #     config_blob = await Blobs.add_config_blob(container_client,filters)
-    
-    # except Exception as e:
-    #     raise HTTPException(status_code=400, detail=f"Error while creating config Blob: {str(e)}")
 
     try:
         meta_data = Metadata(created_at="", updated_at="", filters=filters) 
