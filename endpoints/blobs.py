@@ -73,7 +73,7 @@ async def create_blob(request:Request,project_label:str = Body(None),file: Uploa
         company = {"companies": company_data, "companies_total_count": len(company_data)}
         matched_company = []
 
-        for c in company.get(companies,[]):
+        for c in company.get('companies',[]):
             match_company = {
                 "id": int(uuid.uuid4().int % (10**8)),
                 "name": c["Name"] if "Name" in c else None,
